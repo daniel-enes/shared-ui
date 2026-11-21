@@ -217,9 +217,18 @@ describe('FormAlert', () => {
     const alert: HTMLElement =
       fixture.nativeElement.querySelector('.form-alert');
 
+    const formError =
+      alert.querySelector('.form-alert__form-error');
+
+    const errorButton =
+      alert.querySelector('.form-alert__error-link');
+
     expect(alert.textContent).toContain(
       'As senhas devem coincidir.'
     );
+
+    expect(formError).toBeTruthy();
+    expect(errorButton).toBeFalsy();
 
   });
 

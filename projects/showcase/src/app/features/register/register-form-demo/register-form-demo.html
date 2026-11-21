@@ -1,0 +1,105 @@
+<div class="container py-5">
+  <h2 class="mb-4">Demonstração do REGISTER_FORM_MESSAGES</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <section class="register-demo">
+
+                <header class="mb-4">
+                    <h2 class="h4">Formulário de cadastro</h2>
+
+                    <p class="text-body-secondary">
+                    Demonstração de utilização dos componentes de formulário
+                    com mensagens de validação personalizadas.
+                    </p>
+                </header>
+
+                <div class="alert alert-info">
+                    <strong>Experimente:</strong>
+
+                    <ul class="mb-0 mt-2">
+                    <li>Utilize <code>usuario-existente</code> no username.</li>
+                    <li>Utilize <code>existente@exemplo.com</code> no email.</li>
+                    <li>Digite senhas diferentes para testar a validação do formulário.</li>
+                    </ul>
+                </div>
+
+                <form
+                    uiFormContext
+                    #formContext="uiFormContext"
+                    (submit)="onSubmit($event, formContext)"
+                    novalidate
+                >
+
+                    <ui-form-alert
+                    [form]="registerForm"
+                    [submitted]="submitted()"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-input
+                    [field]="registerForm.name"
+                    label="Nome"
+                    fieldName="name"
+                    placeholder="Seu nome completo"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-input
+                    [field]="registerForm.username"
+                    label="Nome de usuário"
+                    fieldName="username"
+                    placeholder="seu-usuario"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-input
+                    [field]="registerForm.email"
+                    label="Email"
+                    fieldName="email"
+                    type="email"
+                    placeholder="usuario@exemplo.com"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-input
+                    [field]="registerForm.password"
+                    label="Senha"
+                    fieldName="password"
+                    type="password"
+                    placeholder="Digite sua senha"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-input
+                    [field]="registerForm.confirmPassword"
+                    label="Confirme sua senha"
+                    fieldName="confirmPassword"
+                    type="password"
+                    placeholder="Digite sua senha novamente"
+                    [messages]="messages"
+                    />
+
+                    <div class="d-flex gap-2 mt-4">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Cadastrar
+                    </button>
+
+                    </div>
+
+                    @if (registered()) {
+                    <div class="alert alert-success mt-3" role="status">
+                        Cadastro validado com sucesso!
+                    </div>
+                    }
+
+                </form>
+
+            </section>
+        </div>
+    </div>
+</div>

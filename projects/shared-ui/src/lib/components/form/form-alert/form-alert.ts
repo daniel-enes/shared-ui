@@ -25,6 +25,7 @@ interface FormAlertError {
   message: string;
   fieldName: string;
   fieldTree: ReadonlyFieldTree<unknown>;
+  isFormError: boolean;
 }
 
 @Component({
@@ -80,7 +81,8 @@ export class FormAlert {
         kind: error.kind,
         message,
         fieldName,
-        fieldTree
+        fieldTree,
+        isFormError
       };
 
     });

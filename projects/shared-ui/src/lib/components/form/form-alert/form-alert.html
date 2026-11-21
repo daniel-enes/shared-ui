@@ -17,13 +17,21 @@
     <ul class="mb-0">
       @for (error of alertErrors(); track error.id) {
         <li class="my-3">
-          <button
-            type="button"
-            class="alert-link form-alert__error-link"
-            (click)="focusError(error)"
-          >
-            {{ error.message }}
-          </button>
+
+          @if (error.isFormError) {
+            <span class="form-alert__form-error">
+              {{ error.message }}
+            </span>
+          } @else {
+            <button
+              type="button"
+              class="alert-link form-alert__error-link"
+              (click)="focusError(error)"
+            >
+              {{ error.message }}
+            </button>
+          }
+
         </li>
       }
     </ul>
