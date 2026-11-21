@@ -46,7 +46,7 @@
     </div>
   }
 
-  @if (showError() && errorMessage()) {
+  @if (hasErrorMessage()) {
     <div
       [id]="feedbackId()"
       class="invalid-feedback d-block"

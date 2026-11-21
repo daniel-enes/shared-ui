@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -121,6 +120,10 @@ export class FormInput {
     () => this.isTouched() && this.isInvalid()
   );
 
+  readonly hasErrorMessage = computed(
+    () => this.showError() && !!this.errorMessage()
+  );
+
   // Error message
   readonly errorMessage = computed(() => {
 
@@ -152,7 +155,7 @@ export class FormInput {
       ids.push(this.descriptionId());
     }
 
-    if (this.showError()) {
+    if (this.hasErrorMessage()) {
       ids.push(this.feedbackId());
     }
 
