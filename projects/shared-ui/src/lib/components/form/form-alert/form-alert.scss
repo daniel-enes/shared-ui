@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+.form-alert {
+  margin-bottom: 1.5rem;
+}
+
+.form-alert__error-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}

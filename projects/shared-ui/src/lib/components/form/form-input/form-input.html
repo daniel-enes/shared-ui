@@ -1,0 +1,60 @@
+<div class="mb-3">
+
+  <label
+    [for]="resolvedInputId()"
+    class="form-label"
+    [class.visually-hidden]="labelHidden()">
+
+    {{ label() }}
+
+  </label>
+
+  @if (description()) {
+    <div
+      [id]="descriptionId()"
+      class="form-text mb-2">
+
+      {{ description() }}
+
+    </div>
+  }
+
+  <input
+    [formField]="field()"
+    [id]="resolvedInputId()"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="showError() ? 'true' : null"
+    [class.is-invalid]="showError()"
+    class="form-control"
+  />
+
+  @if (isPending()) {
+    <div
+      [id]="pendingId()"
+      class="form-text"
+      role="status">
+
+      <span
+        class="spinner-border spinner-border-sm me-2"
+        aria-hidden="true">
+      </span>
+
+      {{ pendingMessage() }}
+
+    </div>
+  }
+
+  @if (showError() && errorMessage()) {
+    <div
+      [id]="feedbackId()"
+      class="invalid-feedback d-block"
+      aria-live="polite">
+
+      {{ errorMessage() }}
+
+    </div>
+  }
+
+</div>

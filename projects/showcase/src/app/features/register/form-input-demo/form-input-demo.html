@@ -1,0 +1,46 @@
+<div class="container py-5">
+
+  <h2 class="mb-4">Demonstração do FormInput</h2>
+
+  <div class="card">
+    <div class="card-body">
+
+      <ui-form-alert
+        [form]="registerForm"
+        [submitted]="submitted()"
+      />
+
+      <ui-form-input
+        [field]="registerForm.username"
+        label="Nome de usuário"
+        placeholder="Informe seu username"
+        description="Utilize pelo menos 8 caracteres."
+        fieldName="username"
+      />
+
+      <ui-form-input
+        [field]="registerForm.email"
+        label="Email"
+        type="email"
+        placeholder="Informe seu email"
+        fieldName="email"
+      />
+
+      <hr>
+
+      <h5>Modelo atual:</h5>
+
+      <pre>{{ model() | json }}</pre>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onSubmit()"
+      >
+        Enviar
+      </button>
+
+    </div>
+  </div>
+
+</div>
