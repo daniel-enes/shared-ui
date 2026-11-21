@@ -57,4 +57,16 @@
     </div>
   }
 
+  @if (canReturnToAlert()) {
+    <button
+      type="button"
+      class="form-input__summary-link"
+      (click)="returnToAlert()"
+    >
+      Voltar ao resumo de erros
+    </button>
+  }
+
+
+
 </div>

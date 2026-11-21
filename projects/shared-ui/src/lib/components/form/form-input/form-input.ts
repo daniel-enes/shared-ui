@@ -19,6 +19,7 @@ import {
   ValidationMessageService
 } from '../../../forms/services/validation-message.service';
 
+import { FormContext } from '../../../forms/services/form-context.service';
 
 export type FormInputType =
   | 'text'
@@ -37,7 +38,23 @@ export type FormInputType =
 })
 export class FormInput {
 
+  // Service to resolve validation messages
   private readonly messageService = inject(ValidationMessageService);
+
+  // Service to check if the form has an alert and if it is visible
+  private readonly formContext = inject(FormContext, {
+    optional: true
+  });
+
+  readonly canReturnToAlert = computed(() => {
+    return this.showError() &&
+      (this.formContext?.canReturnToAlert() ?? false);
+  });
+
+  // Return to alert
+  returnToAlert(): void {
+    this.formContext?.focusAlert();
+  }
 
   // Inputs
   field = input.required<FieldTree<string>>();
@@ -103,7 +120,6 @@ export class FormInput {
   readonly showError = computed(
     () => this.isTouched() && this.isInvalid()
   );
-
 
   // Error message
   readonly errorMessage = computed(() => {
