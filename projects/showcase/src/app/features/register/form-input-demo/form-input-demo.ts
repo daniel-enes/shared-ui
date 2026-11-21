@@ -28,7 +28,6 @@ interface RegisterModel {
 
 @Component({
   selector: 'app-form-input-demo',
-  standalone: true,
   imports: [
     FormInput,
     FormAlert,

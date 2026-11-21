@@ -1,0 +1,139 @@
+<div class="container py-5">
+
+  <h2 class="mb-4">Demonstração de múltiplos formulários</h2>
+
+  <div class="row g-4">
+
+    <!-- Primeiro formulário -->
+    <div class="col-md-6">
+
+      <div class="card h-100">
+        <div class="card-header">
+          Primeiro formulário
+        </div>
+
+        <div class="card-body">
+
+          <form
+            uiFormContext
+            #firstContext="uiFormContext"
+            (submit)="onSubmit(
+              $event,
+              firstForm,
+              firstSubmitted,
+              firstContext
+            )"
+            novalidate
+          >
+
+            <ui-form-alert
+              [form]="firstForm"
+              [submitted]="firstSubmitted()"
+            />
+
+            <ui-form-input
+              [field]="firstForm.username"
+              inputId="first-username"
+              label="Nome de usuário"
+              placeholder="Informe seu username"
+              description="Utilize pelo menos 8 caracteres."
+              fieldName="username"
+            />
+
+            <ui-form-input
+              [field]="firstForm.email"
+              inputId="first-email"
+              label="Email"
+              type="email"
+              placeholder="Informe seu email"
+              fieldName="email"
+            />
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="firstForm().submitting()"
+            >
+              Enviar primeiro formulário
+            </button>
+
+          </form>
+
+          <hr>
+
+          <h6>Modelo do primeiro formulário:</h6>
+          <pre>{{ firstModel() | json }}</pre>
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Segundo formulário -->
+    <div class="col-md-6">
+
+      <div class="card h-100">
+        <div class="card-header">
+          Segundo formulário
+        </div>
+
+        <div class="card-body">
+
+          <form
+            uiFormContext
+            #secondContext="uiFormContext"
+            (submit)="onSubmit(
+              $event,
+              secondForm,
+              secondSubmitted,
+              secondContext
+            )"
+            novalidate
+          >
+
+            <ui-form-alert
+              [form]="secondForm"
+              [submitted]="secondSubmitted()"
+            />
+
+            <ui-form-input
+              [field]="secondForm.username"
+              inputId="second-username"
+              label="Nome de usuário"
+              placeholder="Informe seu username"
+              description="Utilize pelo menos 8 caracteres."
+              fieldName="username"
+            />
+
+            <ui-form-input
+              [field]="secondForm.email"
+              inputId="second-email"
+              label="Email"
+              type="email"
+              placeholder="Informe seu email"
+              fieldName="email"
+            />
+
+            <button
+              type="submit"
+              class="btn btn-success"
+              [disabled]="secondForm().submitting()"
+            >
+              Enviar segundo formulário
+            </button>
+
+          </form>
+
+          <hr>
+
+          <h6>Modelo do segundo formulário:</h6>
+          <pre>{{ secondModel() | json }}</pre>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
