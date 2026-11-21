@@ -65,11 +65,13 @@ export class FormAlert {
     return this.form()().errorSummary().map((error, index) => {
 
       const fieldTree = error.fieldTree;
-      const fieldName = fieldTree().name();
+      const isFormError = fieldTree === this.form();
+      const fieldPath = fieldTree().name();
+      const fieldName = fieldPath.split('.').pop() ?? fieldPath;
 
       const message = this.messageService.resolve(error, {
-        field: fieldName,
-        scope: 'field',
+        field: isFormError ? undefined : fieldName,
+        scope: isFormError ? 'form' : 'field',
         config: this.messages()
       });
 

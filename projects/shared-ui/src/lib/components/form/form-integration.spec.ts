@@ -123,7 +123,6 @@ interface RegisterModel {
 
       <ui-form-input
         [field]="firstForm.username"
-        inputId="first-username"
         label="Primeiro username"
         fieldName="username"
       />
@@ -153,7 +152,6 @@ interface RegisterModel {
 
       <ui-form-input
         [field]="secondForm.username"
-        inputId="second-username"
         label="Segundo username"
         fieldName="username"
       />
@@ -424,6 +422,14 @@ describe('Multiple forms integration', () => {
         const firstAlert: HTMLElement =
             firstForm.querySelector('.form-alert')!;
 
+        const firstInput: HTMLInputElement =
+            firstForm.querySelector('input')!;
+
+        const secondInput: HTMLInputElement =
+            secondForm.querySelector('input')!;
+
+        expect(firstInput.id).not.toBe(secondInput.id);
+
         expect(document.activeElement).toBe(firstAlert);
 
         // Submete o segundo formulário.
@@ -440,6 +446,9 @@ describe('Multiple forms integration', () => {
 
         const secondAlert: HTMLElement =
             secondForm.querySelector('.form-alert')!;
+
+        expect(firstAlert.getAttribute('aria-labelledby'))
+            .not.toBe(secondAlert.getAttribute('aria-labelledby'));
 
         expect(document.activeElement).toBe(secondAlert);
 

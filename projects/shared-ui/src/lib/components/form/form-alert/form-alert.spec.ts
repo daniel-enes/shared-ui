@@ -4,8 +4,13 @@ import { TestBed } from '@angular/core/testing';
 import {
   form,
   required,
-  minLength
+  minLength,
+  validate
 } from '@angular/forms/signals';
+
+import {
+  ValidationMessageConfig
+} from '../../../forms/models/validation-message.model';
 
 import {
   FormAlert,
@@ -30,12 +35,14 @@ import {
       <ui-form-alert
         [form]="registerForm"
         [submitted]="submitted()"
+        [messages]="messages()"
       />
 
       <ui-form-input
         [field]="registerForm.username"
         label="Username"
         fieldName="username"
+        [messages]="messages()"
       />
 
       <button
@@ -57,9 +64,44 @@ class TestHostComponent {
 
   submitted = signal(false);
 
+  messages = signal<ValidationMessageConfig>({});
+
   registerForm = form(this.model, (path) => {
     required(path.username);
     minLength(path.username, 8);
+  });
+
+}
+
+@Component({
+  standalone: true,
+  imports: [FormAlert],
+  template: `
+    <ui-form-alert
+      [form]="registerForm"
+      [submitted]="true"
+      [messages]="messages"
+    />
+  `
+})
+class FormLevelErrorHostComponent {
+
+  model = signal({
+    username: 'daniel123'
+  });
+
+  messages: ValidationMessageConfig = {
+    form: {
+      passwordMismatch: 'As senhas devem coincidir.'
+    }
+  };
+
+  registerForm = form(this.model, (path) => {
+
+    validate(path, () => ({
+      kind: 'passwordMismatch'
+    }));
+
   });
 
 }
@@ -70,7 +112,7 @@ describe('FormAlert', () => {
   beforeEach(async () => {
 
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent]
+      imports: [TestHostComponent, FormLevelErrorHostComponent]
     }).compileComponents();
 
   });
@@ -135,6 +177,48 @@ describe('FormAlert', () => {
 
     expect(alert.textContent).toContain(
       'Este campo é obrigatório.'
+    );
+
+  });
+
+  it('should use the field-specific message in the error summary', () => {
+
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.messages.set({
+      fields: {
+        username: {
+          required: 'Username personalizado é obrigatório.'
+        }
+      }
+    });
+
+    fixture.detectChanges();
+
+    fixture.componentInstance.submitted.set(true);
+
+    fixture.detectChanges();
+
+    const alert: HTMLElement =
+      fixture.nativeElement.querySelector('.form-alert');
+
+    expect(alert.textContent).toContain(
+      'Username personalizado é obrigatório.'
+    );
+
+  });
+
+  it('should use form-level messages for errors attached to the form', () => {
+
+    const fixture = TestBed.createComponent(FormLevelErrorHostComponent);
+
+    fixture.detectChanges();
+
+    const alert: HTMLElement =
+      fixture.nativeElement.querySelector('.form-alert');
+
+    expect(alert.textContent).toContain(
+      'As senhas devem coincidir.'
     );
 
   });

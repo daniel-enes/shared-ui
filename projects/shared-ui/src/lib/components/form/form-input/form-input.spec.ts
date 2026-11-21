@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, resource, signal } from '@angular/core';
 
 import {
   TestBed
@@ -7,8 +7,13 @@ import {
 import {
   form,
   required,
-  minLength
+  minLength,
+  validateAsync
 } from '@angular/forms/signals';
+
+import {
+  ValidationMessageConfig
+} from '../../../forms/models/validation-message.model';
 
 import {
   FormInput
@@ -23,12 +28,23 @@ import {
       [field]="registerForm.username"
       label="Username"
       placeholder="Digite seu username"
-      description="Utilize pelo menos 8 caracteres."
+      [description]="description()"
       fieldName="username"
+      [messages]="messages()"
+      [labelHidden]="labelHidden()"
+      [inputId]="inputId()"
     />
   `
 })
 class TestHostComponent {
+
+  messages = signal<ValidationMessageConfig>({});
+
+  description = signal('Utilize pelo menos 8 caracteres.');
+
+  labelHidden = signal(false);
+
+  inputId = signal<string | undefined>(undefined);
 
   model = signal({
     username: ''
@@ -44,13 +60,56 @@ class TestHostComponent {
 
 }
 
+@Component({
+  standalone: true,
+  imports: [FormInput],
+  template: `
+    <ui-form-input
+      [field]="registerForm.username"
+      label="Username"
+      description="Descrição do campo."
+      pendingMessage="Validando username..."
+      inputId="pending-username"
+    />
+  `
+})
+class PendingTestHostComponent {
+
+  model = signal({
+    username: 'daniel123'
+  });
+
+  private resolveValidation: (() => void) | undefined;
+
+  registerForm = form(this.model, (path) => {
+
+    validateAsync(path.username, {
+      params: ({ value }) => value(),
+      factory: (params) => resource({
+        params,
+        loader: () => new Promise<void>((resolve) => {
+          this.resolveValidation = resolve;
+        })
+      }),
+      onSuccess: () => [],
+      onError: () => []
+    });
+
+  });
+
+  finishValidation(): void {
+    this.resolveValidation?.();
+  }
+
+}
+
 
 describe('FormInput', () => {
 
   beforeEach(async () => {
 
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent]
+      imports: [TestHostComponent, PendingTestHostComponent]
     }).compileComponents();
 
   });
@@ -81,6 +140,26 @@ describe('FormInput', () => {
     const input: HTMLInputElement =
       fixture.nativeElement.querySelector('input');
 
+    expect(label.getAttribute('for')).toBe(input.id);
+
+  });
+
+  it('should visually hide the label without removing its association', () => {
+
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.labelHidden.set(true);
+
+    fixture.detectChanges();
+
+    const label: HTMLLabelElement =
+      fixture.nativeElement.querySelector('label');
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    expect(label).toBeTruthy();
+    expect(label.classList).toContain('visually-hidden');
     expect(label.getAttribute('for')).toBe(input.id);
 
   });
@@ -130,6 +209,43 @@ describe('FormInput', () => {
       'Este campo é obrigatório.'
     );
 
+    expect(input.getAttribute('aria-describedby')?.split(' '))
+      .toContain(feedback.id);
+
+  });
+
+  it('should not reference a missing error message', () => {
+
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.messages.set({
+      fields: {
+        username: {
+          required: ''
+        }
+      }
+    });
+
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    input.dispatchEvent(new Event('blur'));
+
+    fixture.detectChanges();
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(fixture.nativeElement.querySelector('.invalid-feedback')).toBeFalsy();
+    expect(describedBy).not.toContain('ui-username-feedback');
+    expect(
+      describedBy.every((id) =>
+        fixture.nativeElement.ownerDocument.getElementById(id)
+      )
+    ).toBe(true);
+
   });
 
   it('should display the placeholder', () => {
@@ -145,28 +261,6 @@ describe('FormInput', () => {
 
   });
 
-  it('should display the description', () => {
-
-    const fixture = TestBed.createComponent(TestHostComponent);
-
-    fixture.detectChanges();
-
-    const input: HTMLInputElement =
-      fixture.nativeElement.querySelector('input');
-
-    const descriptionId = input.getAttribute('aria-describedby');
-
-    const description: HTMLElement | null =
-      fixture.nativeElement.ownerDocument.getElementById(descriptionId!);
-
-    expect(description).toBeTruthy();
-
-    expect(description!.textContent).toContain(
-      'Utilize pelo menos 8 caracteres.'
-    );
-
-  });
-
   it('should associate the description with the input using aria-describedby', () => {
 
     const fixture = TestBed.createComponent(TestHostComponent);
@@ -176,16 +270,95 @@ describe('FormInput', () => {
     const input: HTMLInputElement =
       fixture.nativeElement.querySelector('input');
 
-    const descriptionId = input.getAttribute('aria-describedby');
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+    const descriptionId = describedBy.find((id) => id.endsWith('-description'));
 
     expect(descriptionId).toBeTruthy();
 
-    const description: HTMLElement | null =
-      fixture.nativeElement.ownerDocument.getElementById(descriptionId!);
-
+    const description: HTMLElement | null = fixture.nativeElement
+      .ownerDocument.getElementById(descriptionId!);
     expect(description).toBeTruthy();
 
+    expect(description!.textContent).toContain(
+      'Utilize pelo menos 8 caracteres.'
+    );
+
     expect(description!.id).toBe(descriptionId);
+
+  });
+
+  it('should remove the description reference when no description is provided', () => {
+
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.description.set('');
+
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    expect(fixture.nativeElement.querySelector('.form-text')).toBeFalsy();
+    expect(input.hasAttribute('aria-describedby')).toBe(false);
+
+  });
+
+  it('should respect a custom input ID and derive auxiliary IDs from it', () => {
+
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.inputId.set('account-username');
+
+    fixture.detectChanges();
+
+    const label: HTMLLabelElement =
+      fixture.nativeElement.querySelector('label');
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    expect(input.id).toBe('account-username');
+    expect(label.htmlFor).toBe('account-username');
+    expect(fixture.nativeElement.querySelector('#account-username-description'))
+      .toBeTruthy();
+
+    input.dispatchEvent(new Event('blur'));
+
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('#account-username-feedback')
+    ).toBeTruthy();
+
+  });
+
+  it('should expose pending validation accessibly until it completes', async () => {
+
+    const fixture = TestBed.createComponent(PendingTestHostComponent);
+
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const status: HTMLElement =
+      fixture.nativeElement.querySelector('[role="status"]');
+
+    expect(status).toBeTruthy();
+    expect(status.textContent).toContain('Validando username...');
+    expect(status.id).toBe('pending-username-pending');
+    expect(input.getAttribute('aria-describedby')?.split(' '))
+      .toContain(status.id);
+
+    fixture.componentInstance.finishValidation();
+
+    await fixture.whenStable();
+
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[role="status"]')).toBeFalsy();
+    expect(input.getAttribute('aria-describedby')?.split(' '))
+      .not.toContain('pending-username-pending');
 
   });
 
@@ -237,6 +410,8 @@ describe('FormInput', () => {
     ).toBeFalsy();
 
     expect(input.getAttribute('aria-invalid')).not.toBe('true');
+    expect(input.getAttribute('aria-describedby')?.split(' '))
+      .not.toContain('ui-username-feedback');
 
   });
 
