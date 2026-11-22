@@ -2,7 +2,8 @@ import {
   Component,
   computed,
   inject,
-  input
+  input,
+  signal
 } from '@angular/core';
 
 import {
@@ -46,7 +47,7 @@ export class FormInput {
   });
 
   readonly canReturnToAlert = computed(() => {
-    return this.showError() &&
+    return this.hasFocus() &&
       (this.formContext?.canReturnToAlert() ?? false);
   });
 
@@ -76,6 +77,8 @@ export class FormInput {
 
   labelHidden = input(false);
 
+  // State
+  private readonly hasFocus = signal(false);
 
   // Field state
   readonly fieldState = computed(() => this.field()());
@@ -144,6 +147,24 @@ export class FormInput {
     });
 
   });
+
+  // Related to focus
+  onFocusIn(): void {
+    this.hasFocus.set(true);
+  }
+
+  onFocusOut(event: FocusEvent): void {
+    const container = event.currentTarget as HTMLElement;
+    const nextTarget = event.relatedTarget;
+
+    // O foco continua dentro do componente.
+    // Exemplo: saiu do input e foi para o botão de retorno.
+    if (nextTarget instanceof Node && container.contains(nextTarget)) {
+      return;
+    }
+
+    this.hasFocus.set(false);
+  }
 
 
   // Accessibility
