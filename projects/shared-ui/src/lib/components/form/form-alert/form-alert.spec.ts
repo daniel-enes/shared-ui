@@ -34,7 +34,6 @@ import {
 
       <ui-form-alert
         [form]="registerForm"
-        [submitted]="submitted()"
         [messages]="messages()"
       />
 
@@ -62,8 +61,6 @@ class TestHostComponent {
     username: ''
   });
 
-  submitted = signal(false);
-
   messages = signal<ValidationMessageConfig>({});
 
   registerForm = form(this.model, (path) => {
@@ -75,13 +72,25 @@ class TestHostComponent {
 
 @Component({
   standalone: true,
-  imports: [FormAlert],
+  imports: [
+    FormAlert,
+    FormContextDirective
+  ],
   template: `
-    <ui-form-alert
-      [form]="registerForm"
-      [submitted]="true"
-      [messages]="messages"
-    />
+    <form uiFormContext #formContext="uiFormContext">
+      <ui-form-alert
+        [form]="registerForm"
+        [messages]="messages"
+      />
+
+      <button
+        type="button"
+        id="request-focus"
+        (click)="formContext.requestAlertFocus()"
+      >
+        Solicitar foco
+      </button>
+    </form>
   `
 })
 class FormLevelErrorHostComponent {
@@ -97,15 +106,27 @@ class FormLevelErrorHostComponent {
   };
 
   registerForm = form(this.model, (path) => {
-
     validate(path, () => ({
       kind: 'passwordMismatch'
     }));
-
   });
 
 }
 
+function requestAlert(fixture: {
+  nativeElement: HTMLElement;
+  detectChanges: () => void;
+}): void {
+  const button =
+  fixture.nativeElement.querySelector<HTMLButtonElement>('#request-focus');
+
+  if (!button) {
+    throw new Error('Botão de solicitação de foco não encontrado.');
+  }
+
+  button.click();
+  fixture.detectChanges();
+}
 
 describe('FormAlert', () => {
 
@@ -145,19 +166,15 @@ describe('FormAlert', () => {
 
 
   it('should display the alert when the form is submitted and has errors', () => {
-
     const fixture = TestBed.createComponent(TestHostComponent);
 
     fixture.detectChanges();
 
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     const alert = fixture.nativeElement.querySelector('.form-alert');
 
     expect(alert).toBeTruthy();
-
   });
 
   it('should display validation error messages', () => {
@@ -166,9 +183,7 @@ describe('FormAlert', () => {
 
     fixture.detectChanges();
 
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     const alert: HTMLElement =
       fixture.nativeElement.querySelector('.form-alert');
@@ -195,9 +210,7 @@ describe('FormAlert', () => {
 
     fixture.detectChanges();
 
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     const alert: HTMLElement =
       fixture.nativeElement.querySelector('.form-alert');
@@ -209,10 +222,11 @@ describe('FormAlert', () => {
   });
 
   it('should use form-level messages for errors attached to the form', () => {
-
     const fixture = TestBed.createComponent(FormLevelErrorHostComponent);
 
     fixture.detectChanges();
+
+    requestAlert(fixture);
 
     const alert: HTMLElement =
       fixture.nativeElement.querySelector('.form-alert');
@@ -229,7 +243,6 @@ describe('FormAlert', () => {
 
     expect(formError).toBeTruthy();
     expect(errorButton).toBeFalsy();
-
   });
 
   it('should focus the corresponding field when an error is clicked', async () => {
@@ -238,9 +251,7 @@ describe('FormAlert', () => {
 
     fixture.detectChanges();
 
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     await fixture.whenStable();
 
@@ -264,9 +275,7 @@ describe('FormAlert', () => {
 
     fixture.detectChanges();
 
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     const alert: HTMLElement =
       fixture.nativeElement.querySelector('.form-alert');
@@ -282,15 +291,12 @@ describe('FormAlert', () => {
 
   });
 
-  it('should automatically focus the alert when it becomes visible', async () => {
-
+  it('should focus the alert after an explicit focus request', async () => {
     const fixture = TestBed.createComponent(TestHostComponent);
 
     fixture.detectChanges();
 
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     await fixture.whenStable();
 
@@ -298,9 +304,7 @@ describe('FormAlert', () => {
       fixture.nativeElement.querySelector('.form-alert');
 
     expect(alert).toBeTruthy();
-
     expect(document.activeElement).toBe(alert);
-
   });
 
   it('should focus the alert again when a new focus request is made', async () => {
@@ -310,9 +314,7 @@ describe('FormAlert', () => {
     fixture.detectChanges();
 
     // Exibe o resumo de erros.
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     await fixture.whenStable();
 
@@ -349,9 +351,7 @@ describe('FormAlert', () => {
       username: 'daniel123'
     });
 
-    fixture.componentInstance.submitted.set(true);
-
-    fixture.detectChanges();
+    requestAlert(fixture);
 
     const alert = fixture.nativeElement.querySelector('.form-alert');
 

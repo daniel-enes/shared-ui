@@ -37,7 +37,6 @@ import {
 
       <ui-form-alert
         [form]="registerForm"
-        [submitted]="submitted()"
       />
 
       <ui-form-input
@@ -118,7 +117,6 @@ interface RegisterModel {
 
       <ui-form-alert
         [form]="firstForm"
-        [submitted]="firstSubmitted()"
       />
 
       <ui-form-input
@@ -147,7 +145,6 @@ interface RegisterModel {
 
       <ui-form-alert
         [form]="secondForm"
-        [submitted]="secondSubmitted()"
       />
 
       <ui-form-input
@@ -222,6 +219,63 @@ describe('Form integration', () => {
 
     });
 
+    it('should not display the alert again when a field becomes invalid without a new submission', async () => {
+      const fixture = TestBed.createComponent(TestHostComponent);
+
+      fixture.detectChanges();
+
+      const formElement: HTMLFormElement =
+        fixture.nativeElement.querySelector('form');
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector('input');
+
+      // Primeira submissão inválida.
+      formElement.dispatchEvent(
+        new Event('submit', {
+          bubbles: true,
+          cancelable: true
+        })
+      );
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(
+        fixture.nativeElement.querySelector('.form-alert')
+      ).toBeTruthy();
+
+      // Corrige o campo.
+      input.value = 'daniel123';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement.querySelector('.form-alert')
+      ).toBeFalsy();
+
+      // Coloca o foco no campo e torna-o inválido novamente.
+      input.focus();
+
+      input.value = 'daniel1';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      // O resumo não deve reaparecer.
+      expect(
+        fixture.nativeElement.querySelector('.form-alert')
+      ).toBeFalsy();
+
+      // O foco deve permanecer no campo.
+      expect(document.activeElement).toBe(input);
+    });
+
     it('should focus FormAlert after an invalid form submission', async () => {
 
         const fixture = TestBed.createComponent(TestHostComponent);
@@ -277,18 +331,23 @@ describe('Form integration', () => {
         const input: HTMLInputElement =
             fixture.nativeElement.querySelector('input');
 
-        const returnButton: HTMLButtonElement =
-            fixture.nativeElement.querySelector('.form-input__summary-link');
-
-        expect(returnButton).toBeTruthy();
-
         // Simula o usuário voltando a interagir com o campo.
         input.focus();
 
+        fixture.detectChanges();
+
         expect(document.activeElement).toBe(input);
+
+        // O link aparece quando o campo recebe foco.
+        const returnButton: HTMLButtonElement =
+          fixture.nativeElement.querySelector('.form-input__summary-link');
+
+        expect(returnButton).toBeTruthy();
 
         // Solicita o retorno ao resumo.
         returnButton.click();
+
+        expect(document.activeElement).toBe(alert);
 
         expect(document.activeElement).toBe(alert);
 
@@ -493,24 +552,28 @@ describe('Multiple forms integration', () => {
         await fixture.whenStable();
 
         const firstAlert: HTMLElement =
-            firstForm.querySelector('.form-alert')!;
+          firstForm.querySelector('.form-alert')!;
 
-        const secondInput: HTMLInputElement =
-            secondForm.querySelector('input')!;
+        const firstInput: HTMLInputElement =
+          firstForm.querySelector('input')!;
 
+        // Move o foco para o campo do primeiro formulário.
+        firstInput.focus();
+
+        fixture.detectChanges();
+
+        expect(document.activeElement).toBe(firstInput);
+
+        // Recupera o link de retorno do primeiro formulário.
         const firstReturnButton: HTMLButtonElement =
-            firstForm.querySelector('.form-input__summary-link')!;
+          firstForm.querySelector('.form-input__summary-link')!;
 
-        // Move o foco para o segundo formulário.
-        secondInput.focus();
-
-        expect(document.activeElement).toBe(secondInput);
+        expect(firstReturnButton).toBeTruthy();
 
         // Solicita o retorno ao resumo do primeiro formulário.
         firstReturnButton.click();
 
         expect(document.activeElement).toBe(firstAlert);
-
     });
 
     it('should have unique title IDs when multiple alerts are displayed', async () => {

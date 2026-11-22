@@ -3,9 +3,11 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   ElementRef,
   inject,
   input,
+  signal,
   viewChild
 } from '@angular/core';
 
@@ -53,8 +55,6 @@ export class FormAlert {
   // Inputs
   form = input.required<FieldTree<unknown>>();
 
-  submitted = input(false);
-
   messages = input<ValidationMessageConfig>({});
 
   // Computed Properties
@@ -88,11 +88,19 @@ export class FormAlert {
     });
   });
 
-  readonly visible = computed(() => {
-    return this.submitted() && this.alertErrors().length > 0;
-  });
+  readonly visible = computed(
+    () =>
+      (this.formContext?.alertRequested() ?? false) &&
+      this.alertErrors().length > 0
+  );
 
   constructor() {
+
+    effect(() => {
+      if (this.alertErrors().length === 0) {
+        this.formContext?.hideAlert();
+      }
+    });
 
     if (this.formContext) {
 
@@ -144,5 +152,9 @@ export class FormAlert {
   returnToAlert(): void {
     this.formContext?.focusAlert();
   }
+
+  // showErrors(): void {
+  //   this.showAlert.set(true);
+  // }
 
 }

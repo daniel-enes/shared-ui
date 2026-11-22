@@ -13,6 +13,10 @@ interface FormAlertReference {
 @Injectable()
 export class FormContext {
 
+  private readonly alertRequestedState = signal(false);
+
+  readonly alertRequested = this.alertRequestedState.asReadonly();
+
   private readonly alert = signal<FormAlertReference | null>(null);
 
   private readonly focusRequests = signal(0);
@@ -48,7 +52,12 @@ export class FormContext {
   }
 
   requestAlertFocus(): void {
+    this.alertRequestedState.set(true);
     this.focusRequests.update(value => value + 1);
+  }
+
+  hideAlert(): void {
+    this.alertRequestedState.set(false);
   }
 
 }
