@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.invalid-feedback,
+.form-text {
+  font-size: 0.875rem;
+}
+
+.form-date__summary-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--bs-link-color);
+  font-size: 0.875rem;
+  text-decoration: underline;
+
+  cursor: pointer;
+
+  &:hover {
+    color: var(--bs-link-hover-color);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}

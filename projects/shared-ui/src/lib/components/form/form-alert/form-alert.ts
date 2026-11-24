@@ -115,10 +115,8 @@ export class FormAlert {
 
     }
 
-    let wasVisible = false;
-
     let previousFocusRequest =
-      this.formContext?.focusRequest() ?? 0;
+    this.formContext?.focusRequest() ?? 0;
 
     afterRenderEffect({
       write: () => {
@@ -129,12 +127,8 @@ export class FormAlert {
 
         const shouldFocus =
           visible &&
-          (
-            !wasVisible ||
-            currentFocusRequest !== previousFocusRequest
-          );
+          currentFocusRequest !== previousFocusRequest;
 
-        wasVisible = visible;
         previousFocusRequest = currentFocusRequest;
 
         if (shouldFocus) {

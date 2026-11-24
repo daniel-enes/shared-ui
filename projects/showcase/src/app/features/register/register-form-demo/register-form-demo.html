@@ -79,6 +79,47 @@
                     [messages]="messages"
                     />
 
+                    <ui-form-textarea
+                    [field]="registerForm.description"
+                    label="Descrição"
+                    fieldName="description"
+                    placeholder="Conte-nos um pouco sobre você"
+                    [messages]="messages"
+                    [rows]="5"
+                    />
+
+                    <ui-form-select
+                    [field]="registerForm.country"
+                    label="País"
+                    fieldName="country"
+                    placeholder="Selecione seu país"
+                    [options]="countries"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-number
+                    label="Idade"
+                    description="Informe sua idade."
+                    [field]="registerForm.age"
+                    [hideSpinner]="true"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-date
+                    label="Data de nascimento"
+                    description="Informe sua data de nascimento."
+                    [field]="registerForm.birthdate"
+                    [messages]="messages"
+                    />
+
+                    <ui-form-time
+                    label="Horário preferido"
+                    description="Informe o horário de preferência."
+                    [field]="registerForm.preferredTime"
+                    [step]="300"
+                    [messages]="messages"
+                    />
+
                     <div class="d-flex gap-2 mt-4">
 
                     <button

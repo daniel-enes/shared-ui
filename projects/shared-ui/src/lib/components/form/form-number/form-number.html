@@ -1,0 +1,77 @@
+<div
+  class="mb-3"
+  (focusin)="onFocusIn()"
+  (focusout)="onFocusOut($event)"
+>
+
+  <label
+    [for]="resolvedInputId()"
+    class="form-label"
+    [class.visually-hidden]="labelHidden()">
+
+    {{ label() }}
+
+  </label>
+
+  @if (description()) {
+    <div
+      [id]="descriptionId()"
+      class="form-text mb-2">
+
+      {{ description() }}
+
+    </div>
+  }
+
+  <input
+    type="number"
+    [formField]="field()"
+    [id]="resolvedInputId()"
+    [placeholder]="placeholder()"
+    [attr.step]="step()"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="showError() ? 'true' : null"
+    [class.is-invalid]="showError()"
+    [class.form-number__input--hide-spinner]="hideSpinner()"
+    class="form-control"
+  />
+
+  @if (isPending()) {
+    <div
+      [id]="pendingId()"
+      class="form-text"
+      role="status">
+
+      <span
+        class="spinner-border spinner-border-sm me-2"
+        aria-hidden="true">
+      </span>
+
+      {{ pendingMessage() }}
+
+    </div>
+  }
+
+  @if (hasErrorMessage()) {
+    <div
+      [id]="feedbackId()"
+      class="invalid-feedback d-block"
+      aria-live="polite">
+
+      {{ errorMessage() }}
+
+    </div>
+  }
+
+  @if (canReturnToAlert()) {
+    <button
+      type="button"
+      class="form-number__summary-link"
+      (click)="returnToAlert()">
+
+      Voltar ao resumo de erros
+
+    </button>
+  }
+
+</div>

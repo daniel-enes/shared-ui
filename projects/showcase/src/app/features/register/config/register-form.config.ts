@@ -33,7 +33,34 @@ export const REGISTER_FORM_MESSAGES: ValidationMessageConfig = {
 
     confirmPassword: {
       required: 'Confirme sua senha.'
+    },
+
+    description: {
+      required: 'Descrição é obrigatória.',
+      minLength: 'A descrição deve possuir pelo menos 10 caracteres.',
+      maxLength: 'A descrição não pode ultrapassar 200 caracteres.'
+    },
+
+    country: {
+      required: 'Selecione seu país.'
+    },
+
+    age: {
+      required: 'Informe sua idade.',
+      min: 'A idade mínima é 18 anos.',
+      max: 'A idade máxima é 120 anos.'
+    },
+
+    birthdate: {
+      required: 'Informe sua data de nascimento.',
+      maxDate: 'A data de nascimento não pode ser no futuro.',
+      minDate: 'A data de nascimento não pode ser anterior a 01/01/1900.'
+    },
+
+    preferredTime: {
+      required: 'Informe seu horário preferido.'
     }
+    
 
   },
 

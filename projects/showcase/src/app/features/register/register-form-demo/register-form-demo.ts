@@ -8,13 +8,23 @@ import {
   pattern,
   email,
   validate,
-  submit
+  submit,
+  min,
+  max,
+  maxDate,
+  minDate
 } from '@angular/forms/signals';
 
 import {
   FormInput,
   FormAlert,
-  FormContextDirective
+  FormContextDirective,
+  FormTextarea,
+  FormSelect,
+  FormSelectOption,
+  FormNumber,
+  FormDate,
+  FormTime
 } from 'shared-ui';
 
 import { REGISTER_FORM_MESSAGES } from '../config/register-form.config';
@@ -26,6 +36,11 @@ interface RegisterModel {
   email: string;
   password: string;
   confirmPassword: string;
+  description: string;
+  country: string;
+  age: number;
+  birthdate: Date;
+  preferredTime: string;
 }
 
 @Component({
@@ -33,7 +48,12 @@ interface RegisterModel {
   imports: [
     FormInput,
     FormAlert,
-    FormContextDirective
+    FormContextDirective,
+    FormTextarea,
+    FormSelect,
+    FormNumber,
+    FormDate,
+    FormTime
   ],
   templateUrl: './register-form-demo.html',
   styleUrl: './register-form-demo.scss'
@@ -53,7 +73,12 @@ export class RegisterFormDemo {
     username: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    description: '',
+    country: '',
+    age: 0,
+    birthdate: new Date(),
+    preferredTime: ''
   });
 
   // Signal Forms
@@ -111,7 +136,49 @@ export class RegisterFormDemo {
 
     });
 
+    // Description
+    required(path.description);
+    minLength(path.description, 10);
+    maxLength(path.description, 300);
+
+    // Country
+    required(path.country);
+
+    // Age
+    required(path.age);
+    min(path.age, 18);
+    max(path.age, 120);
+
+    // Birthdate
+    const now = new Date();
+
+    const today = new Date(
+      Date.UTC(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+      )
+    );
+
+    // Birthdate
+    required(path.birthdate);
+    maxDate(path.birthdate, today);
+    minDate(
+      path.birthdate,
+      new Date('1900-01-01')
+    );
+
+    // Preferred time
+    required(path.preferredTime);
+
   });
+
+  countries: FormSelectOption[] = [
+    { label: 'Brasil', value: 'BR', disabled: true },
+    { label: 'Finlândia', value: 'FI' },
+    { label: 'Indonésia', value: 'ID' },
+    { label: 'Portugal', value: 'PT' }
+  ];
 
   async onSubmit(
     event: Event,

@@ -28,11 +28,20 @@
     [id]="resolvedInputId()"
     [type]="type()"
     [placeholder]="placeholder()"
-    [attr.aria-describedby]="describedBy()"
+    [attr.aria-describedby]="describedByWithCharacterCount()"
     [attr.aria-invalid]="showError() ? 'true' : null"
     [class.is-invalid]="showError()"
     class="form-control"
   />
+  @if (showCharacterCount()) {
+    <div
+      [id]="characterCountId()"
+      class="form-text text-end">
+
+      {{ currentLength() }} de {{ maxLength() }} caracteres
+
+    </div>
+  }
 
   @if (isPending()) {
     <div
