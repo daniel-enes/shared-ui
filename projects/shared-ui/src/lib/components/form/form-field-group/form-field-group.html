@@ -1,0 +1,18 @@
+<fieldset class="form-field-group">
+  <legend
+    class="form-field-group__legend"
+    [class.visually-hidden]="labelHidden()"
+  >
+    {{ label() }}
+  </legend>
+
+  @if (description()) {
+    <p class="form-field-group__description">
+      {{ description() }}
+    </p>
+  }
+
+  <div class="form-field-group__content">
+    <ng-content />
+  </div>
+</fieldset>

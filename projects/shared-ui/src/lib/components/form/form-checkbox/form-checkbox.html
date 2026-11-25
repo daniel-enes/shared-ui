@@ -1,0 +1,52 @@
+<div
+  class="form-check"
+  (focusin)="onFocusIn()"
+  (focusout)="onFocusOut($event)"
+>
+  <input
+    class="form-check-input"
+    [class.is-invalid]="showError()"
+    type="checkbox"
+    [id]="resolvedInputId()"
+    [formField]="field()"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="isInvalid() ? 'true' : null"
+  />
+
+  <label
+    class="form-check-label"
+    [class.visually-hidden]="labelHidden()"
+    [for]="resolvedInputId()"
+  >
+    {{ label() }}
+  </label>
+
+  @if (hasErrorMessage()) {
+    <div
+      class="invalid-feedback d-block"
+      [id]="feedbackId()"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isPending()) {
+    <div
+      class="form-text"
+      [id]="pendingId()"
+      role="status"
+    >
+      {{ pendingMessage() }}
+    </div>
+  }
+
+  @if (canReturnToAlert()) {
+    <button
+      type="button"
+      class="form-checkbox__summary-link"
+      (click)="returnToAlert()"
+    >
+      Voltar ao resumo de erros
+    </button>
+  }
+</div>

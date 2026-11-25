@@ -1,0 +1,70 @@
+<fieldset
+  class="form-radio-group"
+  (focusin)="onFocusIn()"
+  (focusout)="onFocusOut($event)"
+  [attr.aria-describedby]="describedBy()"
+  [attr.aria-invalid]="isInvalid() ? 'true' : null"
+>
+  <legend
+    class="form-radio-group__legend"
+    [class.visually-hidden]="labelHidden()"
+  >
+    {{ label() }}
+  </legend>
+
+  <div
+    class="form-radio-group__options"
+    [class.form-radio-group__options--inline]="inline()"
+  >
+    @for (option of options(); track option.value; let i = $index) {
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          [class.is-invalid]="showError()"
+          type="radio"
+          [id]="resolvedInputId() + '-' + i"
+          [value]="option.value"
+          [formField]="field()"
+          [attr.aria-describedby]="describedBy()"
+          [attr.aria-invalid]="isInvalid() ? 'true' : null"
+        />
+
+        <label
+          class="form-check-label"
+          [for]="resolvedInputId() + '-' + i"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    }
+  </div>
+
+  @if (hasErrorMessage()) {
+    <div
+      class="invalid-feedback d-block"
+      [id]="feedbackId()"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isPending()) {
+    <div
+      class="form-text"
+      [id]="pendingId()"
+      role="status"
+    >
+      {{ pendingMessage() }}
+    </div>
+  }
+
+  @if (canReturnToAlert()) {
+    <button
+      type="button"
+      class="form-radio-group__summary-link"
+      (click)="returnToAlert()"
+    >
+      Voltar ao resumo de erros
+    </button>
+  }
+</fieldset>

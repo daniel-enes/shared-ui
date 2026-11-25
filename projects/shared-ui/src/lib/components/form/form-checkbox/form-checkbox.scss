@@ -1,0 +1,16 @@
+.form-checkbox__summary-link {
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bs-link-color);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--bs-focus-ring-color);
+    outline-offset: 2px;
+  }
+}

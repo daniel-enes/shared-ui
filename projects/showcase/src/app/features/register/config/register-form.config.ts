@@ -57,8 +57,26 @@ export const REGISTER_FORM_MESSAGES: ValidationMessageConfig = {
       minDate: 'A data de nascimento não pode ser anterior a 01/01/1900.'
     },
 
+    gender: {
+      required: 'Selecione seu gênero.'
+    },
+
     preferredTime: {
       required: 'Informe seu horário preferido.'
+    },
+
+    appointment: {
+      required: 'Informe a data e horário do agendamento.'
+    },
+
+    acceptTerms: {
+      termsNotAccepted: 'Você deve aceitar os termos e condições.'
+    },
+
+    attachment: {
+      fileTooLarge: 'O arquivo selecionado é muito grande. O tamanho máximo permitido é 5 MB.',
+      invalidFileType: 'Tipo de arquivo inválido. Por favor, selecione um arquivo PDF.',
+      required: 'Selecione um arquivo para upload.'
     }
     
 

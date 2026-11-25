@@ -1,0 +1,35 @@
+.form-file {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-file__selected {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-file__clear,
+.form-file__summary-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bs-link-color);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--bs-focus-ring-color);
+    outline-offset: 2px;
+  }
+}
+
+.form-file__summary-link {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}

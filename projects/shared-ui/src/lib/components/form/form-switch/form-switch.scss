@@ -1,0 +1,63 @@
+.form-switch-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: unset;
+  padding-left: 0;
+
+  .form-check-input {
+    float: none;
+    flex-shrink: 0;
+    margin: 0;
+    order: 0;
+  }
+
+  .form-check-label {
+    margin: 0;
+    order: 1;
+  }
+
+  .invalid-feedback,
+  .form-text,
+  &__summary-link {
+    width: 100%;
+  }
+
+  .invalid-feedback {
+    order: 2;
+  }
+
+  .form-text {
+    order: 3;
+  }
+}
+
+.form-switch-control--label-start {
+  .form-check-input {
+    order: 1;
+  }
+
+  .form-check-label {
+    order: 0;
+  }
+}
+
+.form-switch-control__summary-link {
+  order: 4;
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bs-link-color);
+  font-size: 0.875rem;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--bs-focus-ring-color);
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,54 @@
+<div
+  class="form-check form-switch form-switch-control"
+  [class.form-switch-control--label-start]="labelPosition() === 'start'"
+  (focusin)="onFocusIn()"
+  (focusout)="onFocusOut($event)"
+>
+  <input
+    class="form-check-input"
+    type="checkbox"
+    role="switch"
+    [id]="resolvedInputId()"
+    [class.is-invalid]="showError()"
+    [formField]="field()"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="isInvalid() ? 'true' : null"
+  />
+
+  <label
+    class="form-check-label"
+    [class.visually-hidden]="labelHidden()"
+    [for]="resolvedInputId()"
+  >
+    {{ label() }}
+  </label>
+
+  @if (hasErrorMessage()) {
+    <div
+      class="invalid-feedback d-block"
+      [id]="feedbackId()"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isPending()) {
+    <div
+      class="form-text"
+      [id]="pendingId()"
+      role="status"
+    >
+      {{ pendingMessage() }}
+    </div>
+  }
+
+  @if (canReturnToAlert()) {
+    <button
+      type="button"
+      class="form-switch-control__summary-link"
+      (click)="returnToAlert()"
+    >
+      Voltar ao resumo de erros
+    </button>
+  }
+</div>

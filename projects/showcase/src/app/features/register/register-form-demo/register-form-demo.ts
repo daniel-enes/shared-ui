@@ -12,7 +12,8 @@ import {
   min,
   max,
   maxDate,
-  minDate
+  minDate,
+  FormField
 } from '@angular/forms/signals';
 
 import {
@@ -24,7 +25,14 @@ import {
   FormSelectOption,
   FormNumber,
   FormDate,
-  FormTime
+  FormTime,
+  FormDateTime,
+  FormCheckbox,
+  FormRadioGroup,
+  FormRadioGroupOption,
+  FormSwitch,
+  FormFieldGroup,
+  FormFile,
 } from 'shared-ui';
 
 import { REGISTER_FORM_MESSAGES } from '../config/register-form.config';
@@ -41,6 +49,11 @@ interface RegisterModel {
   age: number;
   birthdate: Date;
   preferredTime: string;
+  appointment: string;
+  acceptTerms: boolean;
+  gender: string;
+  notificationsEnabled: boolean;
+  attachment: File | null;
 }
 
 @Component({
@@ -53,7 +66,14 @@ interface RegisterModel {
     FormSelect,
     FormNumber,
     FormDate,
-    FormTime
+    FormTime,
+    FormDateTime,
+    FormCheckbox,
+    FormRadioGroup,
+    FormSwitch,
+    FormFieldGroup,
+    FormFile,
+    FormField,
   ],
   templateUrl: './register-form-demo.html',
   styleUrl: './register-form-demo.scss'
@@ -78,7 +98,12 @@ export class RegisterFormDemo {
     country: '',
     age: 0,
     birthdate: new Date(),
-    preferredTime: ''
+    preferredTime: '',
+    appointment: '',
+    acceptTerms: false,
+    gender: '',
+    notificationsEnabled: true,
+    attachment: null as File | null
   });
 
   // Signal Forms
@@ -160,7 +185,6 @@ export class RegisterFormDemo {
       )
     );
 
-    // Birthdate
     required(path.birthdate);
     maxDate(path.birthdate, today);
     minDate(
@@ -171,6 +195,37 @@ export class RegisterFormDemo {
     // Preferred time
     required(path.preferredTime);
 
+    // Appointment
+    required(path.appointment); 
+
+    // Gender
+    required(path.gender);
+
+    // File attachment
+    required(path.attachment);
+    validate(path.attachment, ({ value }) => {
+      const file = value();
+
+      if (!file) return null;
+
+      if (file.size > 5 * 1024 * 1024) {
+        return { kind: 'fileTooLarge' };
+      }
+
+      if (file.type !== 'application/pdf') {
+        return { kind: 'invalidFileType' };
+      }
+
+      return null;
+    });
+
+    // Accept Terms
+    validate(path.acceptTerms, ({ value }) => {
+      return value()
+        ? null
+        : { kind: 'termsNotAccepted' };
+    });
+
   });
 
   countries: FormSelectOption[] = [
@@ -178,6 +233,13 @@ export class RegisterFormDemo {
     { label: 'Finlândia', value: 'FI' },
     { label: 'Indonésia', value: 'ID' },
     { label: 'Portugal', value: 'PT' }
+  ];
+
+  readonly genderOptions: FormRadioGroupOption[] = [
+    { label: 'Masculino', value: 'MALE' },
+    { label: 'Feminino', value: 'FEMALE' },
+    { label: 'Outro', value: 'OTHER' },
+    { label: 'Prefiro não informar', value: 'NOT_INFORMED' }
   ];
 
   async onSubmit(

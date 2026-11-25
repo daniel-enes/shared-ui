@@ -1,0 +1,84 @@
+<div
+  class="form-file"
+  (focusin)="onFocusIn()"
+  (focusout)="onFocusOut($event)"
+>
+  <label
+    class="form-label"
+    [class.visually-hidden]="labelHidden()"
+    [for]="resolvedInputId()"
+  >
+    {{ label() }}
+  </label>
+
+  @if (description()) {
+    <div
+      class="form-text mb-2"
+      [id]="descriptionId()"
+    >
+      {{ description() }}
+    </div>
+  }
+
+  <input
+    #fileInput
+    class="form-control"
+    type="file"
+    [id]="resolvedInputId()"
+    [accept]="accept() || null"
+    [disabled]="disabled()"
+    [required]="required()"
+    [class.is-invalid]="showError()"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="showError() ? 'true' : null"
+    (change)="onFileChange($event)"
+    (blur)="touch.emit()"
+  />
+
+  @if (fileName()) {
+    <div class="form-file__selected">
+      <span>
+        Arquivo selecionado: {{ fileName() }}
+      </span>
+
+      @if (!disabled()) {
+        <button
+          type="button"
+          class="form-file__clear"
+          (click)="clearSelection()"
+        >
+          Remover arquivo
+        </button>
+      }
+    </div>
+  }
+
+  @if (hasErrorMessage()) {
+    <div
+      class="invalid-feedback d-block"
+      [id]="feedbackId()"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (pending()) {
+    <div
+      class="form-text"
+      [id]="pendingId()"
+      role="status"
+    >
+      {{ pendingMessage() }}
+    </div>
+  }
+
+  @if (canReturnToAlert()) {
+    <button
+      type="button"
+      class="form-file__summary-link"
+      (click)="returnToAlert()"
+    >
+      Voltar ao resumo de erros
+    </button>
+  }
+</div>
