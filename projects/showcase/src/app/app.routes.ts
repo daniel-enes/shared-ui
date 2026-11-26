@@ -2,6 +2,12 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
+        path: 'button-demo',
+        title: 'Button Demo',
+        loadComponent: () => import('./features/button/button-demo/button-demo')
+        .then(m => m.ButtonDemo)
+    },
+    {
         path: 'multiple-forms',
         title: 'Multiple Forms',
         loadComponent: () => import('./features/register/multiple-forms-demo/multiple-forms-demo')

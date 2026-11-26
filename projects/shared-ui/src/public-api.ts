@@ -39,3 +39,9 @@ export { FormSwitch} from './lib/components/form/form-switch/form-switch';
 export { FormFieldGroup} from './lib/components/form/form-field-group/form-field-group';
 
 export { FormFile } from './lib/components/form/form-file/form-file';
+
+export { UiButton } from './lib/components/button/button';
+export type { UiButtonSize, UiButtonVariant } from './lib/components/button/button-variant.model';
+
+export { UiButtonLink } from './lib/components/button-link/button-link';
+export type { RouterLinkTarget } from './lib/components/button-link/button-link';

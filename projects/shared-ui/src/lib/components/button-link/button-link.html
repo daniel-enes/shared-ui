@@ -1,0 +1,23 @@
+<a
+  [class]="linkClasses()"
+  [routerLink]="routerLink()"
+  [queryParams]="queryParams()"
+  [fragment]="fragment() || undefined"
+  [target]="target() || undefined"
+  [rel]="rel() || undefined"
+  [replaceUrl]="replaceUrl()"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.title]="resolvedTitle() || null"
+  (click)="handleClick()"
+>
+  @if (icon()) {
+    <i
+      [class]="icon()"
+      aria-hidden="true"
+    ></i>
+  }
+
+  @if (text()) {
+    <span class="mx-2">{{ text() }}</span>
+  }
+</a>
