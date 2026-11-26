@@ -7,6 +7,18 @@
   font-size: 0.875rem;
 }
 
+.form-text-field__meta {
+  font-size: 0.875rem;
+}
+
+.form-text-field__meta .form-text {
+  margin-top: 0;
+}
+
+.form-text-field__message {
+  min-width: 0;
+}
+
 .form-textarea__summary-link {
   display: inline-block;
   margin-top: 0.25rem;
