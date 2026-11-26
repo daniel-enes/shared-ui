@@ -1,0 +1,135 @@
+<div class="container py-5">
+  <h2 class="mb-4">Demonstração do UiAlert</h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Controle do alerta</h5>
+
+      <div class="mb-3">
+        <button
+          type="button"
+          class="btn btn-primary me-2"
+          (click)="show()">
+          Exibir alerta
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary me-2"
+          (click)="hide()">
+          Esconder alerta
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary me-2"
+          (click)="toggleDismissible()">
+          Alternar fechamento ({{
+            dismissible() ? 'ativo' : 'inativo'
+          }})
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary me-2"
+          (click)="simulateNewOperation()">
+          Simular nova operação
+        </button>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-auto">
+          <label class="form-label small text-muted">Variante</label>
+        </div>
+        <div class="col-auto">
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-success]="variant() === 'success'"
+            [class.btn-info]="variant() === 'info'"
+            [class.btn-warning]="variant() === 'warning'"
+            [class.btn-danger]="variant() === 'danger'"
+            (click)="setVariant('success')">
+            Sucesso
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-success]="variant() === 'success'"
+            [class.btn-info]="variant() === 'info'"
+            [class.btn-warning]="variant() === 'warning'"
+            [class.btn-danger]="variant() === 'danger'"
+            (click)="setVariant('info')">
+            Informação
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-success]="variant() === 'success'"
+            [class.btn-info]="variant() === 'info'"
+            [class.btn-warning]="variant() === 'warning'"
+            [class.btn-danger]="variant() === 'danger'"
+            (click)="setVariant('warning')">
+            Aviso
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-success]="variant() === 'success'"
+            [class.btn-info]="variant() === 'info'"
+            [class.btn-warning]="variant() === 'warning'"
+            [class.btn-danger]="variant() === 'danger'"
+            (click)="setVariant('danger')">
+            Erro
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label class="form-label small text-muted">Título</label>
+        <input
+          type="text"
+          class="form-control form-control-sm w-auto d-inline-block me-2"
+          style="max-width: 180px;"
+          [value]="title()"
+          (input)="setTitle($any($event.target).value)">
+
+        <label class="form-label small text-muted ms-3">Mensagem</label>
+        <input
+          type="text"
+          class="form-control form-control-sm w-auto d-inline-block me-2"
+          style="max-width: 260px;"
+          [value]="message()"
+          (input)="setMessage($any($event.target).value)">
+      </div>
+
+      <div class="mt-3">
+        <p class="small text-muted">
+          Fechamentos: {{ dismissedCount() }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Pré-visualização</h5>
+
+      <ui-alert
+        [title]="title()"
+        [message]="message()"
+        [variant]="variant()"
+        [visible]="visible()"
+        [dismissible]="dismissible()"
+        (dismissed)="onDismissed()">
+      </ui-alert>
+
+      <div class="mt-3">
+        <p class="small text-muted">
+          O alerta recebe foco programático ao aparecer e sempre que seu conteúdo
+          muda enquanto permanece visível.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

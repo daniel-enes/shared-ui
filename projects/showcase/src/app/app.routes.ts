@@ -2,6 +2,12 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
+        path: 'alert-demo',
+        title: 'UiAlert Demo',
+        loadComponent: () => import('./features/alert/alert-demo/alert-demo')
+        .then(m => m.AlertDemo)
+    },
+    {
         path: 'form-input',
         title: 'FormInput Demo',
         loadComponent: () => import('./features/register/form-input-demo/form-input-demo')

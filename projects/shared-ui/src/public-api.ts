@@ -45,3 +45,6 @@ export type { UiButtonSize, UiButtonVariant } from './lib/components/button/butt
 
 export { UiButtonLink } from './lib/components/button/button-link/button-link';
 export type { RouterLinkTarget } from './lib/components/button/button-link/button-link';
+
+export { UiAlert } from './lib/components/alert/alert/alert';
+export type { UiAlertVariant } from './lib/components/alert/alert/alert-variant.model';
