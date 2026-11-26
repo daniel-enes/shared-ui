@@ -6,40 +6,26 @@ import {
 } from '@angular/core';
 
 import {
-  Params,
-  RouterLink,
-  UrlTree
-} from '@angular/router';
-
-import {
   UiButtonSize,
   UiButtonVariant
-} from '../button/button-variant.model';
-
-export type RouterLinkTarget =
-  | string
-  | readonly unknown[]
-  | UrlTree
-  | null
-  | undefined;
+} from '../button-variant.model';
 
 /**
- * Navega para um destino e renderiza um elemento `<a>` com `RouterLink`.
+ * Executa uma ação e renderiza um elemento `<button>`.
  *
- * Classes aplicadas diretamente a `<ui-button-link>` (por exemplo, `class="mt-2"`)
- * são aplicadas ao elemento host, e não ao `<a>` interno. Para estilizar o
+ * Classes aplicadas diretamente a `<ui-button>` (por exemplo, `class="mt-2"`)
+ * são aplicadas ao elemento host, e não ao `<button>` interno. Para estilizar o
  * elemento interno, utilize os inputs visuais (`variant`, `size`, `fullWidth`).
  */
 @Component({
-  selector: 'ui-button-link',
-  imports: [RouterLink],
+  selector: 'ui-button',
   host: {
-    '[class.ui-button-link--full-width]': 'fullWidth()'
+    '[class.ui-button--full-width]': 'fullWidth()'
   },
-  templateUrl: './button-link.html',
-  styleUrl: './button-link.scss'
+  templateUrl: './button.html',
+  styleUrl: './button.scss'
 })
-export class UiButtonLink {
+export class UiButton {
 
   // Inputs
   readonly text = input('');
@@ -50,17 +36,13 @@ export class UiButtonLink {
 
   readonly size = input<UiButtonSize | undefined>(undefined);
 
-  readonly routerLink = input.required<RouterLinkTarget>();
+  readonly type = input<'button' | 'submit'>('button');
 
-  readonly queryParams = input<Params | null>(null);
+  readonly loading = input(false);
 
-  readonly fragment = input('');
+  readonly loadingMessage = input('Carregando...');
 
-  readonly target = input('');
-
-  readonly rel = input('');
-
-  readonly replaceUrl = input(false);
+  readonly disabled = input(false);
 
   readonly ariaLabel = input('');
 
@@ -76,7 +58,11 @@ export class UiButtonLink {
     () => this.title() || this.ariaLabel()
   );
 
-  readonly linkClasses = computed(() => {
+  readonly isDisabled = computed(
+    () => this.disabled() || this.loading()
+  );
+
+  readonly buttonClasses = computed(() => {
     const classes = ['btn', `btn-${this.variant()}`];
 
     const size = this.size();
@@ -93,6 +79,10 @@ export class UiButtonLink {
   });
 
   handleClick(): void {
+    if (this.isDisabled()) {
+      return;
+    }
+
     this.clicked.emit();
   }
 

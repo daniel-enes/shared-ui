@@ -11,8 +11,6 @@ import {
   submit,
   min,
   max,
-  maxDate,
-  minDate,
   FormField
 } from '@angular/forms/signals';
 
@@ -47,7 +45,7 @@ interface RegisterModel {
   description: string;
   country: string;
   age: number;
-  birthdate: Date;
+  birthdate: string;
   preferredTime: string;
   appointment: string;
   acceptTerms: boolean;
@@ -97,7 +95,7 @@ export class RegisterFormDemo {
     description: '',
     country: '',
     age: 0,
-    birthdate: new Date(),
+    birthdate: '',
     preferredTime: '',
     appointment: '',
     acceptTerms: false,
@@ -174,23 +172,39 @@ export class RegisterFormDemo {
     min(path.age, 18);
     max(path.age, 120);
 
-    // Birthdate
+    // Birthdate (ISO YYYY-MM-DD, compatível com <input type="date">)
     const now = new Date();
 
-    const today = new Date(
+    const todayIso = new Date(
       Date.UTC(
         now.getFullYear(),
         now.getMonth(),
         now.getDate()
       )
-    );
+    ).toISOString().slice(0, 10);
+
+    const minIso = '1900-01-01';
 
     required(path.birthdate);
-    maxDate(path.birthdate, today);
-    minDate(
-      path.birthdate,
-      new Date('1900-01-01')
-    );
+    validate(path.birthdate, ({ value }) => {
+
+      const date = value();
+
+      if (!date) {
+        return null;
+      }
+
+      if (date > todayIso) {
+        return { kind: 'maxDate' };
+      }
+
+      if (date < minIso) {
+        return { kind: 'minDate' };
+      }
+
+      return null;
+
+    });
 
     // Preferred time
     required(path.preferredTime);
