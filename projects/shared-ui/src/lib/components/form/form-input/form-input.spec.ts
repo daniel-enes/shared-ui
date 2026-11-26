@@ -404,6 +404,104 @@ describe('FormInput', () => {
     expect(list.querySelectorAll('li')).toHaveLength(2);
   });
 
+  it('should display description text before the items list', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF'
+    ]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const container: HTMLElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${input.id}-description`
+      );
+
+    expect(container).toBeTruthy();
+    expect(container!.innerHTML.indexOf('Utilize pelo menos 8 caracteres.'))
+      .toBeLessThan(container!.innerHTML.indexOf('<li'));
+  });
+
+  it('should not render container when description contains only spaces', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.description.set('   ');
+    fixture.componentInstance.descriptionItems.set([]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const descriptionId = `${input.id}-description`;
+
+    const container =
+      fixture.nativeElement.ownerDocument.getElementById(descriptionId);
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(container).toBeFalsy();
+    expect(describedBy).not.toContain(descriptionId);
+  });
+
+  it('should not render container when items contain only empty strings or spaces', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.description.set('');
+    fixture.componentInstance.descriptionItems.set([
+      '',
+      '   ',
+      '\t'
+    ]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const descriptionId = `${input.id}-description`;
+
+    const container =
+      fixture.nativeElement.ownerDocument.getElementById(descriptionId);
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(container).toBeFalsy();
+    expect(describedBy).not.toContain(descriptionId);
+  });
+
+  it('should render only valid items preserving their original order', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.description.set('');
+    fixture.componentInstance.descriptionItems.set([
+      '',
+      'Primeiro item válido',
+      '   ',
+      'Segundo item válido',
+      '',
+      'Terceiro item válido'
+    ]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const container: HTMLElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${input.id}-description`
+      );
+
+    expect(container).toBeTruthy();
+
+    const items = container!.querySelectorAll('li');
+    expect(items).toHaveLength(3);
+    expect(items[0].textContent).toContain('Primeiro item válido');
+    expect(items[1].textContent).toContain('Segundo item válido');
+    expect(items[2].textContent).toContain('Terceiro item válido');
+  });
+
   it('should associate the description items list with the input using aria-describedby', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
 

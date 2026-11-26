@@ -174,6 +174,96 @@ describe('FormTextarea', () => {
     expect(list.querySelectorAll('li')).toHaveLength(2);
   });
 
+  it('should display description text before the items list', () => {
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF'
+    ]);
+    fixture.detectChanges();
+
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
+
+    const container: HTMLElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${textarea.id}-description`
+      );
+
+    expect(container).toBeTruthy();
+    expect(container!.innerHTML.indexOf('Informe uma descrição detalhada.'))
+      .toBeLessThan(container!.innerHTML.indexOf('<li'));
+  });
+
+  it('should not render container when description contains only spaces', () => {
+    fixture.componentInstance.description.set('   ');
+    fixture.componentInstance.descriptionItems.set([]);
+    fixture.detectChanges();
+
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
+
+    const descriptionId = `${textarea.id}-description`;
+
+    const container =
+      fixture.nativeElement.ownerDocument.getElementById(descriptionId);
+
+    const describedBy = textarea.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(container).toBeFalsy();
+    expect(describedBy).not.toContain(descriptionId);
+  });
+
+  it('should not render container when items contain only empty strings or spaces', () => {
+    fixture.componentInstance.description.set('');
+    fixture.componentInstance.descriptionItems.set([
+      '',
+      '   ',
+      '\t'
+    ]);
+    fixture.detectChanges();
+
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
+
+    const descriptionId = `${textarea.id}-description`;
+
+    const container =
+      fixture.nativeElement.ownerDocument.getElementById(descriptionId);
+
+    const describedBy = textarea.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(container).toBeFalsy();
+    expect(describedBy).not.toContain(descriptionId);
+  });
+
+  it('should render only valid items preserving their original order', () => {
+    fixture.componentInstance.description.set('');
+    fixture.componentInstance.descriptionItems.set([
+      '',
+      'Primeiro item válido',
+      '   ',
+      'Segundo item válido',
+      '',
+      'Terceiro item válido'
+    ]);
+    fixture.detectChanges();
+
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
+
+    const container: HTMLElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${textarea.id}-description`
+      );
+
+    expect(container).toBeTruthy();
+
+    const items = container!.querySelectorAll('li');
+    expect(items).toHaveLength(3);
+    expect(items[0].textContent).toContain('Primeiro item válido');
+    expect(items[1].textContent).toContain('Segundo item válido');
+    expect(items[2].textContent).toContain('Terceiro item válido');
+  });
+
   it('should associate the description items list with the textarea using aria-describedby', () => {
     fixture.componentInstance.descriptionItems.set([
       'Apenas arquivos PDF'
