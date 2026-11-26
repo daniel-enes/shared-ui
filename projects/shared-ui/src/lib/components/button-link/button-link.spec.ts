@@ -182,14 +182,20 @@ describe('UiButtonLink', () => {
     expect(fixture.componentInstance.clicks()).toBe(1);
   });
 
-  it('should apply the full width class when configured', () => {
+  it('should make the host full width and stretch the inner link when configured', () => {
     const { fixture, link } = createFixture();
 
+    const host = fixture.nativeElement.querySelector('ui-button-link') as HTMLElement;
+
+    expect(host.classList).not.toContain('ui-button-link--full-width');
+    expect(window.getComputedStyle(host).display).toBe('inline-block');
     expect(link.classList).not.toContain('w-100');
 
     fixture.componentInstance.fullWidth.set(true);
     fixture.detectChanges();
 
+    expect(host.classList).toContain('ui-button-link--full-width');
+    expect(window.getComputedStyle(host).display).toBe('block');
     expect(link.classList).toContain('w-100');
   });
 

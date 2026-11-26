@@ -10,8 +10,18 @@ import {
   UiButtonVariant
 } from './button-variant.model';
 
+/**
+ * Executa uma ação e renderiza um elemento `<button>`.
+ *
+ * Classes aplicadas diretamente a `<ui-button>` (por exemplo, `class="mt-2"`)
+ * são aplicadas ao elemento host, e não ao `<button>` interno. Para estilizar o
+ * elemento interno, utilize os inputs visuais (`variant`, `size`, `fullWidth`).
+ */
 @Component({
   selector: 'ui-button',
+  host: {
+    '[class.ui-button--full-width]': 'fullWidth()'
+  },
   templateUrl: './button.html',
   styleUrl: './button.scss'
 })

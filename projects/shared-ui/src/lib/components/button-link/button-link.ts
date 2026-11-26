@@ -7,7 +7,8 @@ import {
 
 import {
   Params,
-  RouterLink
+  RouterLink,
+  UrlTree
 } from '@angular/router';
 
 import {
@@ -18,12 +19,23 @@ import {
 export type RouterLinkTarget =
   | string
   | readonly unknown[]
+  | UrlTree
   | null
   | undefined;
 
+/**
+ * Navega para um destino e renderiza um elemento `<a>` com `RouterLink`.
+ *
+ * Classes aplicadas diretamente a `<ui-button-link>` (por exemplo, `class="mt-2"`)
+ * são aplicadas ao elemento host, e não ao `<a>` interno. Para estilizar o
+ * elemento interno, utilize os inputs visuais (`variant`, `size`, `fullWidth`).
+ */
 @Component({
   selector: 'ui-button-link',
   imports: [RouterLink],
+  host: {
+    '[class.ui-button-link--full-width]': 'fullWidth()'
+  },
   templateUrl: './button-link.html',
   styleUrl: './button-link.scss'
 })

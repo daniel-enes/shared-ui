@@ -2,6 +2,10 @@
   display: inline-block;
 }
 
+:host(.ui-button--full-width) {
+  display: block;
+}
+
 .spinner-border {
   vertical-align: -0.125em;
 }
