@@ -64,9 +64,16 @@ export class FormFile implements FormValueControl<File | null> {
 
   private readonly hasFocus = signal(false);
 
-  readonly resolvedInputId = computed(
-    () => this.inputId() ?? 'ui-file'
-  );
+  readonly resolvedInputId = computed(() => {
+    if (this.inputId()) {
+      return this.inputId()!;
+    }
+
+    const fieldName = this.name() || 'file';
+    const normalizedName = fieldName.replace(/[^a-zA-Z0-9_-]/g, '-');
+
+    return `ui-${normalizedName}`;
+  });
 
   readonly resolvedFieldName = computed(() => {
     if (this.fieldName()) {
@@ -108,11 +115,6 @@ export class FormFile implements FormValueControl<File | null> {
     const error = this.errors()[0];
 
     if (!error) return null;
-
-    console.log('FormFile - field name:', this.name());
-    console.log('FormFile - resolved field:', this.resolvedFieldName());
-    console.log('FormFile - messages:', this.messages());
-    console.log('FormFile - error:', error);
 
     return this.messageService.resolve(error, {
       field: this.resolvedFieldName(),

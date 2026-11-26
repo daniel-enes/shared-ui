@@ -8,7 +8,8 @@ import {
   form,
   required,
   minLength,
-  validateAsync
+  validateAsync,
+  maxLength
 } from '@angular/forms/signals';
 
 import {
@@ -55,7 +56,8 @@ class TestHostComponent {
     required(path.username);
 
     minLength(path.username, 8);
-
+    maxLength(path.username, 20)
+    
   });
 
 }
@@ -103,15 +105,47 @@ class PendingTestHostComponent {
 
 }
 
+@Component({
+  standalone: true,
+  imports: [FormInput],
+  template: `
+    <ui-form-input
+      [field]="firstForm.username"
+      label="Primeiro username"
+    />
+
+    <ui-form-input
+      [field]="secondForm.username"
+      label="Segundo username"
+    />
+  `
+})
+class DuplicateFieldsHostComponent {
+
+  firstModel = signal({
+    username: ''
+  });
+
+  secondModel = signal({
+    username: ''
+  });
+
+  firstForm = form(this.firstModel);
+
+  secondForm = form(this.secondModel);
+
+}
 
 describe('FormInput', () => {
 
   beforeEach(async () => {
-
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent, PendingTestHostComponent]
+      imports: [
+        TestHostComponent,
+        PendingTestHostComponent,
+        DuplicateFieldsHostComponent
+      ]
     }).compileComponents();
-
   });
 
 
@@ -288,19 +322,28 @@ describe('FormInput', () => {
   });
 
   it('should remove the description reference when no description is provided', () => {
-
     const fixture = TestBed.createComponent(TestHostComponent);
 
     fixture.componentInstance.description.set('');
-
     fixture.detectChanges();
 
     const input: HTMLInputElement =
       fixture.nativeElement.querySelector('input');
 
-    expect(fixture.nativeElement.querySelector('.form-text')).toBeFalsy();
-    expect(input.hasAttribute('aria-describedby')).toBe(false);
+    const descriptionId = `${input.id}-description`;
+    const counterId = `${input.id}-character-count`;
 
+    const description =
+      fixture.nativeElement.ownerDocument.getElementById(descriptionId);
+
+    const counter =
+      fixture.nativeElement.ownerDocument.getElementById(counterId);
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(description).toBeFalsy();
+    expect(describedBy).not.toContain(descriptionId);
+    expect(counter).toBeTruthy();
   });
 
   it('should respect a custom input ID and derive auxiliary IDs from it', () => {
@@ -412,6 +455,84 @@ describe('FormInput', () => {
     expect(input.getAttribute('aria-invalid')).not.toBe('true');
     expect(input.getAttribute('aria-describedby')?.split(' '))
       .not.toContain('ui-username-feedback');
+
+  });
+
+  it('should display a field-specific validation message', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.messages.set({
+      fields: {
+        username: {
+          required: 'Informe seu nome de usuário.'
+        }
+      }
+    });
+
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    input.dispatchEvent(new Event('blur'));
+
+    fixture.detectChanges();
+
+    const feedback: HTMLElement =
+      fixture.nativeElement.querySelector('.invalid-feedback');
+
+    expect(feedback.textContent).toContain(
+      'Informe seu nome de usuário.'
+    );
+  });
+
+  it('should display the character count when maxLength is configured', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    input.value = 'daniel';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const counterId = `${input.id}-character-count`;
+
+    const counter =
+      fixture.nativeElement.ownerDocument.getElementById(counterId);
+
+    expect(counter).toBeTruthy();
+    expect(counter!.textContent).toContain('6');
+    expect(counter!.textContent).toContain('20');
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(describedBy).toContain(counterId);
+  });
+
+  it('should generate unique IDs for fields with the same name', () => {
+
+    const fixture = TestBed.createComponent(DuplicateFieldsHostComponent);
+
+    fixture.detectChanges();
+
+    const inputs = Array.from(
+      fixture.nativeElement.querySelectorAll('input')
+    ) as HTMLInputElement[];
+
+    expect(inputs).toHaveLength(2);
+
+    expect(inputs[0].id).not.toBe(inputs[1].id);
+
+    expect(new Set(inputs.map(input => input.id)).size).toBe(2);
+
+    const labels = Array.from(
+      fixture.nativeElement.querySelectorAll('label')
+    ) as HTMLLabelElement[];
+
+    expect(labels[0].htmlFor).toBe(inputs[0].id);
+    expect(labels[1].htmlFor).toBe(inputs[1].id);
 
   });
 

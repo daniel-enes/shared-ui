@@ -18,6 +18,8 @@ import {
   FormContextDirective
 } from 'shared-ui';
 
+import { By } from '@angular/platform-browser';
+
 
 @Component({
   standalone: true,
@@ -128,12 +130,45 @@ function requestAlert(fixture: {
   fixture.detectChanges();
 }
 
+@Component({
+  standalone: true,
+  imports: [FormAlert, FormContextDirective],
+  template: `
+    <form uiFormContext>
+      <ui-form-alert [form]="firstForm" />
+    </form>
+
+    <form uiFormContext>
+      <ui-form-alert [form]="secondForm" />
+    </form>
+  `
+})
+class DuplicateAlertsHostComponent {
+
+  firstModel = signal({
+    username: ''
+  });
+
+  secondModel = signal({
+    username: ''
+  });
+
+  firstForm = form(this.firstModel);
+
+  secondForm = form(this.secondModel);
+
+}
+
 describe('FormAlert', () => {
 
   beforeEach(async () => {
 
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent, FormLevelErrorHostComponent]
+      imports: [
+        TestHostComponent, 
+        FormLevelErrorHostComponent, 
+        DuplicateAlertsHostComponent
+      ]
     }).compileComponents();
 
   });
@@ -351,6 +386,8 @@ describe('FormAlert', () => {
       username: 'daniel123'
     });
 
+    fixture.detectChanges();
+
     requestAlert(fixture);
 
     const alert = fixture.nativeElement.querySelector('.form-alert');
@@ -359,7 +396,54 @@ describe('FormAlert', () => {
 
   });
 
+  it('should hide the alert when all validation errors are corrected', async () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
 
+    fixture.detectChanges();
+
+    requestAlert(fixture);
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    let alert = fixture.nativeElement.querySelector('.form-alert');
+
+    expect(alert).toBeTruthy();
+
+    fixture.componentInstance.model.set({
+      username: 'daniel123'
+    });
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    alert = fixture.nativeElement.querySelector('.form-alert');
+
+    expect(alert).toBeFalsy();
+  });
+
+  it('should generate unique title IDs for different alerts', () => {
+
+    const fixture = TestBed.createComponent(DuplicateAlertsHostComponent);
+
+    fixture.detectChanges();
+
+    const alerts = fixture.debugElement.queryAll(
+      By.directive(FormAlert)
+    );
+
+    expect(alerts).toHaveLength(2);
+
+    const titleIds = alerts.map(
+      alert => alert.componentInstance.titleId()
+    );
+
+    expect(titleIds[0]).not.toBe(titleIds[1]);
+
+    expect(new Set(titleIds).size).toBe(2);
+
+  });
 
 
 });

@@ -7,7 +7,6 @@ import {
   ElementRef,
   inject,
   input,
-  signal,
   viewChild
 } from '@angular/core';
 
@@ -19,7 +18,7 @@ import {
 import { ValidationMessageConfig } from '../../../forms/models/validation-message.model';
 import { ValidationMessageService } from '../../../forms/services/validation-message.service';
 import { FormContext } from '../../../forms/services/form-context.service';
-
+import { UniqueIdService } from '../../../forms/services/unique-id.service';
 
 interface FormAlertError {
   id: string;
@@ -39,10 +38,8 @@ export class FormAlert {
 
   // Services
   private readonly messageService = inject(ValidationMessageService);
-
-  private readonly formContext = inject(FormContext, {
-    optional: true
-  });
+  private readonly formContext = inject(FormContext);
+  private readonly idService = inject(UniqueIdService);
 
   // Lifecycle
   private readonly destroyRef = inject(DestroyRef);
@@ -51,6 +48,13 @@ export class FormAlert {
   private readonly alertElement =
     viewChild<ElementRef<HTMLElement>>('alertElement');
 
+  // Identification
+  private readonly generatedAlertId =
+    this.idService.generate('alert');
+
+  readonly titleId = computed(
+    () => `${this.generatedAlertId}-title`
+  );
 
   // Inputs
   form = input.required<FieldTree<unknown>>();
@@ -58,10 +62,6 @@ export class FormAlert {
   messages = input<ValidationMessageConfig>({});
 
   // Computed Properties
-  readonly titleId = computed(() => {
-    return `ui-${this.form()().name()}-alert-title`;
-  });
-
   readonly alertErrors = computed<FormAlertError[]>(() => {
     return this.form()().errorSummary().map((error, index) => {
 
@@ -90,7 +90,7 @@ export class FormAlert {
 
   readonly visible = computed(
     () =>
-      (this.formContext?.alertRequested() ?? false) &&
+      this.formContext.alertRequested() &&
       this.alertErrors().length > 0
   );
 
@@ -98,32 +98,27 @@ export class FormAlert {
 
     effect(() => {
       if (this.alertErrors().length === 0) {
-        this.formContext?.hideAlert();
+        this.formContext.hideAlert();
       }
     });
 
-    if (this.formContext) {
+    const unregister = this.formContext.registerAlert({
+      visible: this.visible,
+      focus: () => {
+        this.alertElement()?.nativeElement.focus();
+      }
+    });
 
-      const unregister = this.formContext.registerAlert({
-        visible: this.visible,
-        focus: () => {
-          this.alertElement()?.nativeElement.focus();
-        }
-      });
+    this.destroyRef.onDestroy(unregister);
 
-      this.destroyRef.onDestroy(unregister);
-
-    }
-
-    let previousFocusRequest =
-    this.formContext?.focusRequest() ?? 0;
+    let previousFocusRequest = this.formContext.focusRequest();
 
     afterRenderEffect({
       write: () => {
         const visible = this.visible();
 
         const currentFocusRequest =
-          this.formContext?.focusRequest() ?? 0;
+          this.formContext.focusRequest();
 
         const shouldFocus =
           visible &&
@@ -144,11 +139,7 @@ export class FormAlert {
   }
 
   returnToAlert(): void {
-    this.formContext?.focusAlert();
+    this.formContext.focusAlert();
   }
-
-  // showErrors(): void {
-  //   this.showAlert.set(true);
-  // }
 
 }

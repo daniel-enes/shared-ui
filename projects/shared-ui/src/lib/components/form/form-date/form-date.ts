@@ -13,7 +13,7 @@ import { FormFieldBase } from '../../../forms/shared/form-field-base';
   templateUrl: './form-date.html',
   styleUrl: './form-date.scss'
 })
-export class FormDate extends FormFieldBase<Date> {
+export class FormDate extends FormFieldBase<string> {
 
   label = input.required<string>();
 

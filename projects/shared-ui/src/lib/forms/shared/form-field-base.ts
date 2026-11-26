@@ -12,6 +12,8 @@ import { ValidationMessageConfig } from '../models/validation-message.model';
 import { ValidationMessageService } from '../services/validation-message.service';
 import { FormContext } from '../services/form-context.service';
 
+import { UniqueIdService } from '../services/unique-id.service';
+
 @Directive()
 export abstract class FormFieldBase<TValue> {
 
@@ -21,6 +23,10 @@ export abstract class FormFieldBase<TValue> {
   private readonly formContext = inject(FormContext, {
     optional: true
   });
+
+  private readonly idService = inject(UniqueIdService);
+
+  private readonly generatedInputId = this.idService.generate('field');
 
   // Common inputs
   field = input.required<FieldTree<TValue>>();
@@ -53,7 +59,7 @@ export abstract class FormFieldBase<TValue> {
   });
 
   readonly resolvedInputId = computed(
-    () => this.inputId() ?? `ui-${this.fieldState().name()}`
+    () => this.inputId() ?? this.generatedInputId
   );
 
   readonly descriptionId = computed(
