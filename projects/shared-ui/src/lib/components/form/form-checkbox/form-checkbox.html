@@ -21,6 +21,26 @@
     {{ label() }}
   </label>
 
+  @if (hasDescription()) {
+    <div
+      [id]="descriptionId()"
+      class="form-text mb-2">
+
+      @if (description()) {
+        {{ description() }}
+      }
+
+      @if (descriptionItems().length > 0) {
+        <ul class="description-items">
+          @for (item of descriptionItems(); track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      }
+
+    </div>
+  }
+
   @if (hasErrorMessage()) {
     <div
       class="invalid-feedback d-block"

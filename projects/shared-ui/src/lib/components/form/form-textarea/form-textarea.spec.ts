@@ -12,12 +12,15 @@ import { FormTextarea } from './form-textarea';
       label="Descrição"
       placeholder="Digite uma descrição"
       [description]="description()"
+      [descriptionItems]="descriptionItems()"
       [rows]="4"
     />
   `
 })
 class TestHostComponent {
   description = signal('Informe uma descrição detalhada.');
+
+  descriptionItems = signal<readonly string[]>([]);
 
   model = signal({
     description: ''
@@ -118,6 +121,51 @@ describe('FormTextarea', () => {
     const describedBy = textarea.getAttribute('aria-describedby')?.split(' ') ?? [];
 
     expect(describedBy).toContain(descriptionId);
+  });
+
+  it('should display the description items list', () => {
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF',
+      'Tamanho máximo de 5 MB'
+    ]);
+    fixture.detectChanges();
+
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
+
+    const list: HTMLUListElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${textarea.id}-description`
+      );
+
+    expect(list).toBeTruthy();
+
+    const items = list!.querySelectorAll('li');
+    expect(items).toHaveLength(2);
+    expect(items[0].textContent).toContain('Apenas arquivos PDF');
+    expect(items[1].textContent).toContain('Tamanho máximo de 5 MB');
+  });
+
+  it('should associate the description items list with the textarea using aria-describedby', () => {
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF'
+    ]);
+    fixture.detectChanges();
+
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
+
+    const describedBy = textarea.getAttribute('aria-describedby')?.split(' ') ?? [];
+    const descriptionId = describedBy.find((id) => id.endsWith('-description'));
+
+    expect(descriptionId).toBeTruthy();
+
+    const list: HTMLElement | null = fixture.nativeElement
+      .ownerDocument.getElementById(descriptionId!);
+
+    expect(list).toBeTruthy();
+    expect(list.tagName).toBe('UL');
+    expect(describedBy).toContain(descriptionId!);
   });
 
   // Validation

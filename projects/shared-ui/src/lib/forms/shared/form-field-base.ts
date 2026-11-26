@@ -33,6 +33,8 @@ export abstract class FormFieldBase<TValue> {
 
   description = input('');
 
+  descriptionItems = input<readonly string[]>([]);
+
   inputId = input<string | undefined>(undefined);
 
   fieldName = input<string | undefined>(undefined);
@@ -64,6 +66,10 @@ export abstract class FormFieldBase<TValue> {
 
   readonly descriptionId = computed(
     () => `${this.resolvedInputId()}-description`
+  );
+
+  readonly hasDescription = computed(
+    () => !!this.description() || this.descriptionItems().length > 0
   );
 
   readonly feedbackId = computed(
@@ -145,7 +151,7 @@ export abstract class FormFieldBase<TValue> {
 
     const ids: string[] = [];
 
-    if (this.description()) {
+    if (this.hasDescription()) {
       ids.push(this.descriptionId());
     }
 

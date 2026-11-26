@@ -28,7 +28,25 @@
           label="Email"
           type="email"
           placeholder="Informe seu email"
+          [descriptionItems]="[
+            'Apenas endereços corporativos',
+            'Não utilizaremos seu endereço para spam'
+          ]"
           fieldName="email"
+        />
+
+        <ui-form-input
+          [field]="registerForm.password"
+          label="Senha"
+          type="password"
+          placeholder="Digite sua senha"
+          description="Crie uma senha segura."
+          [descriptionItems]="[
+            'Mínimo de 8 caracteres',
+            'Uma letra maiúscula',
+            'Um número'
+          ]"
+          fieldName="password"
         />
 
         <button

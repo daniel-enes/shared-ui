@@ -30,6 +30,7 @@ import {
       label="Username"
       placeholder="Digite seu username"
       [description]="description()"
+      [descriptionItems]="descriptionItems()"
       fieldName="username"
       [messages]="messages()"
       [labelHidden]="labelHidden()"
@@ -42,6 +43,8 @@ class TestHostComponent {
   messages = signal<ValidationMessageConfig>({});
 
   description = signal('Utilize pelo menos 8 caracteres.');
+
+  descriptionItems = signal<readonly string[]>([]);
 
   labelHidden = signal(false);
 
@@ -344,6 +347,97 @@ describe('FormInput', () => {
     expect(description).toBeFalsy();
     expect(describedBy).not.toContain(descriptionId);
     expect(counter).toBeTruthy();
+  });
+
+  it('should display the description items list', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF',
+      'Tamanho máximo de 5 MB'
+    ]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const list: HTMLUListElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${input.id}-description`
+      );
+
+    expect(list).toBeTruthy();
+
+    const items = list!.querySelectorAll('li');
+    expect(items).toHaveLength(2);
+    expect(items[0].textContent).toContain('Apenas arquivos PDF');
+    expect(items[1].textContent).toContain('Tamanho máximo de 5 MB');
+  });
+
+  it('should display description text before the items list', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF'
+    ]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const container: HTMLElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${input.id}-description`
+      );
+
+    expect(container).toBeTruthy();
+    expect(container!.innerHTML.indexOf('Utilize pelo menos 8 caracteres.'))
+      .toBeLessThan(container!.innerHTML.indexOf('<li'));
+  });
+
+  it('should associate the description items list with the input using aria-describedby', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF'
+    ]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+    const descriptionId = describedBy.find((id) => id.endsWith('-description'));
+
+    expect(descriptionId).toBeTruthy();
+
+    const list: HTMLElement | null = fixture.nativeElement
+      .ownerDocument.getElementById(descriptionId!);
+
+    expect(list).toBeTruthy();
+    expect(list.tagName).toBe('UL');
+    expect(describedBy).toContain(descriptionId!);
+  });
+
+  it('should not render description container when no description or items are provided', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.description.set('');
+    fixture.componentInstance.descriptionItems.set([]);
+    fixture.detectChanges();
+
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const descriptionId = `${input.id}-description`;
+
+    const description =
+      fixture.nativeElement.ownerDocument.getElementById(descriptionId);
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+    expect(description).toBeFalsy();
+    expect(describedBy).not.toContain(descriptionId);
   });
 
   it('should respect a custom input ID and derive auxiliary IDs from it', () => {

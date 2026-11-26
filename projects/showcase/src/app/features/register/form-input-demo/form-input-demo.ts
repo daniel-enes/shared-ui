@@ -24,6 +24,7 @@ import { JsonPipe } from '@angular/common';
 interface RegisterModel {
   username: string;
   email: string;
+  password: string;
 }
 
 @Component({
@@ -40,7 +41,8 @@ export class FormInputDemo {
 
   model = signal<RegisterModel>({
     username: '',
-    email: ''
+    email: '',
+    password: ''
   });
 
   submitted = signal(false);
@@ -50,6 +52,8 @@ export class FormInputDemo {
     minLength(path.username, 8);
     required(path.email);
     email(path.email);
+    required(path.password);
+    minLength(path.password, 8);
   });
 
   async onSubmit(

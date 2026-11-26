@@ -2,6 +2,12 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
+        path: 'form-input',
+        title: 'FormInput Demo',
+        loadComponent: () => import('./features/register/form-input-demo/form-input-demo')
+        .then(m => m.FormInputDemo)
+    },
+    {
         path: 'button-demo',
         title: 'Button Demo',
         loadComponent: () => import('./features/button/button-demo/button-demo')

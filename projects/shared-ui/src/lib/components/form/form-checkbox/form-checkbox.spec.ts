@@ -10,6 +10,8 @@ import { FormCheckbox } from './form-checkbox';
     <ui-form-checkbox
       [field]="testForm.acceptTerms"
       label="Aceito os termos de uso"
+      [description]="description()"
+      [descriptionItems]="descriptionItems()"
     />
   `
 })
@@ -17,6 +19,10 @@ class TestHostComponent {
   model = signal({
     acceptTerms: false
   });
+
+  description = signal('Marque se concorda.');
+
+  descriptionItems = signal<readonly string[]>(['Item 1', 'Item 2']);
 
   testForm = form(this.model);
 }
@@ -57,6 +63,20 @@ describe('FormCheckbox', () => {
       fixture.nativeElement.querySelector('label');
 
     expect(label.htmlFor).toBe(input.id);
+  });
+
+  it('should display the description and items list', () => {
+    const nativeElement = fixture.nativeElement as HTMLElement;
+
+    expect(nativeElement.textContent).toContain('Marque se concorda.');
+    expect(nativeElement.textContent).toContain('Item 1');
+    expect(nativeElement.textContent).toContain('Item 2');
+
+    const list = nativeElement.querySelector('ul');
+    expect(list).toBeTruthy();
+
+    const items = list!.querySelectorAll('li');
+    expect(items).toHaveLength(2);
   });
 
   it('should reflect the initial value from the model', () => {

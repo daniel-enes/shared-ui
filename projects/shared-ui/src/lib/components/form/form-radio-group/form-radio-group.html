@@ -12,6 +12,26 @@
     {{ label() }}
   </legend>
 
+  @if (hasDescription()) {
+    <div
+      [id]="descriptionId()"
+      class="form-text mb-2">
+
+      @if (description()) {
+        {{ description() }}
+      }
+
+      @if (descriptionItems().length > 0) {
+        <ul class="description-items">
+          @for (item of descriptionItems(); track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      }
+
+    </div>
+  }
+
   <div
     class="form-radio-group__options"
     [class.form-radio-group__options--inline]="inline()"
