@@ -138,13 +138,17 @@ describe('FormTextarea', () => {
         `${textarea.id}-description`
       );
 
-    expect(container).toBeTruthy();
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
     expect(container.tagName).toBe('DIV');
 
-    const list: HTMLUListElement | null = container!.querySelector('ul');
-    expect(list).toBeTruthy();
+    const list: HTMLUListElement | null = container.querySelector('ul');
+    if (!list) {
+      throw new Error('Description list was not found');
+    }
 
-    const items = list!.querySelectorAll('li');
+    const items = list.querySelectorAll('li');
     expect(items).toHaveLength(2);
     expect(items[0].textContent).toContain('Apenas arquivos PDF');
     expect(items[1].textContent).toContain('Tamanho máximo de 5 MB');
@@ -166,11 +170,15 @@ describe('FormTextarea', () => {
         `${textarea.id}-description`
       );
 
-    expect(container).toBeTruthy();
-    expect(container!.textContent).not.toContain('Informe uma descrição detalhada.');
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
+    expect(container.textContent).not.toContain('Informe uma descrição detalhada.');
 
-    const list: HTMLUListElement | null = container!.querySelector('ul');
-    expect(list).toBeTruthy();
+    const list: HTMLUListElement | null = container.querySelector('ul');
+    if (!list) {
+      throw new Error('Description list was not found');
+    }
     expect(list.querySelectorAll('li')).toHaveLength(2);
   });
 
@@ -188,9 +196,11 @@ describe('FormTextarea', () => {
         `${textarea.id}-description`
       );
 
-    expect(container).toBeTruthy();
-    expect(container!.innerHTML.indexOf('Informe uma descrição detalhada.'))
-      .toBeLessThan(container!.innerHTML.indexOf('<li'));
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
+    expect(container.innerHTML.indexOf('Informe uma descrição detalhada.'))
+      .toBeLessThan(container.innerHTML.indexOf('<li'));
   });
 
   it('should not render container when description contains only spaces', () => {
@@ -255,9 +265,11 @@ describe('FormTextarea', () => {
         `${textarea.id}-description`
       );
 
-    expect(container).toBeTruthy();
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
 
-    const items = container!.querySelectorAll('li');
+    const items = container.querySelectorAll('li');
     expect(items).toHaveLength(3);
     expect(items[0].textContent).toContain('Primeiro item válido');
     expect(items[1].textContent).toContain('Segundo item válido');
@@ -281,7 +293,9 @@ describe('FormTextarea', () => {
     const container: HTMLElement | null = fixture.nativeElement
       .ownerDocument.getElementById(descriptionId!);
 
-    expect(container).toBeTruthy();
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
     expect(container.tagName).toBe('DIV');
     expect(container.querySelector('ul')).toBeTruthy();
     expect(describedBy).toContain(descriptionId!);

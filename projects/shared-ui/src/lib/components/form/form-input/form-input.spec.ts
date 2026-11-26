@@ -314,13 +314,15 @@ describe('FormInput', () => {
 
     const description: HTMLElement | null = fixture.nativeElement
       .ownerDocument.getElementById(descriptionId!);
-    expect(description).toBeTruthy();
 
-    expect(description!.textContent).toContain(
+    if (!description) {
+      throw new Error('Description element was not found');
+    }
+    expect(description.textContent).toContain(
       'Utilize pelo menos 8 caracteres.'
     );
 
-    expect(description!.id).toBe(descriptionId);
+    expect(description.id).toBe(descriptionId);
 
   });
 
@@ -366,13 +368,17 @@ describe('FormInput', () => {
         `${input.id}-description`
       );
 
-    expect(container).toBeTruthy();
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
     expect(container.tagName).toBe('DIV');
 
-    const list: HTMLUListElement | null = container!.querySelector('ul');
-    expect(list).toBeTruthy();
+    const list: HTMLUListElement | null = container.querySelector('ul');
+    if (!list) {
+      throw new Error('Description list was not found');
+    }
 
-    const items = list!.querySelectorAll('li');
+    const items = list.querySelectorAll('li');
     expect(items).toHaveLength(2);
     expect(items[0].textContent).toContain('Apenas arquivos PDF');
     expect(items[1].textContent).toContain('Tamanho máximo de 5 MB');
@@ -396,11 +402,15 @@ describe('FormInput', () => {
         `${input.id}-description`
       );
 
-    expect(container).toBeTruthy();
-    expect(container!.textContent).not.toContain('Utilize pelo menos 8 caracteres.');
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
+    expect(container.textContent).not.toContain('Utilize pelo menos 8 caracteres.');
 
-    const list: HTMLUListElement | null = container!.querySelector('ul');
-    expect(list).toBeTruthy();
+    const list: HTMLUListElement | null = container.querySelector('ul');
+    if (!list) {
+      throw new Error('Description list was not found');
+    }
     expect(list.querySelectorAll('li')).toHaveLength(2);
   });
 
@@ -420,9 +430,11 @@ describe('FormInput', () => {
         `${input.id}-description`
       );
 
-    expect(container).toBeTruthy();
-    expect(container!.innerHTML.indexOf('Utilize pelo menos 8 caracteres.'))
-      .toBeLessThan(container!.innerHTML.indexOf('<li'));
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
+    expect(container.innerHTML.indexOf('Utilize pelo menos 8 caracteres.'))
+      .toBeLessThan(container.innerHTML.indexOf('<li'));
   });
 
   it('should not render container when description contains only spaces', () => {
@@ -493,9 +505,11 @@ describe('FormInput', () => {
         `${input.id}-description`
       );
 
-    expect(container).toBeTruthy();
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
 
-    const items = container!.querySelectorAll('li');
+    const items = container.querySelectorAll('li');
     expect(items).toHaveLength(3);
     expect(items[0].textContent).toContain('Primeiro item válido');
     expect(items[1].textContent).toContain('Segundo item válido');
@@ -521,7 +535,9 @@ describe('FormInput', () => {
     const container: HTMLElement | null = fixture.nativeElement
       .ownerDocument.getElementById(descriptionId!);
 
-    expect(container).toBeTruthy();
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
     expect(container.tagName).toBe('DIV');
     expect(container.querySelector('ul')).toBeTruthy();
     expect(describedBy).toContain(descriptionId!);
@@ -704,9 +720,11 @@ describe('FormInput', () => {
     const counter =
       fixture.nativeElement.ownerDocument.getElementById(counterId);
 
-    expect(counter).toBeTruthy();
-    expect(counter!.textContent).toContain('6');
-    expect(counter!.textContent).toContain('20');
+    if (!counter) {
+      throw new Error('Character count element was not found');
+    }
+    expect(counter.textContent).toContain('6');
+    expect(counter.textContent).toContain('20');
 
     const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
 

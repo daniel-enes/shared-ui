@@ -8,21 +8,24 @@
     [attr.aria-labelledby]="title() ? titleId() : null"
   >
 
-    <span
-      class="alert-icon"
-      [class]="variantIcon()"
-      aria-hidden="true">
-    </span>
+    <div class="ui-alert__heading">
+      <span
+        class="alert-icon bi"
+        [class.bi-check-circle-fill]="variant() === 'success'"
+        [class.bi-info-circle-fill]="variant() === 'info'"
+        [class.bi-exclamation-triangle-fill]="variant() === 'warning'"
+        [class.bi-x-circle-fill]="variant() === 'danger'"
+        aria-hidden="true">
+      </span>
 
-    @if (title()) {
-      <h5
-        [id]="titleId()"
-        class="alert-heading">
-
-        {{ title() }}
-
-      </h5>
-    }
+      @if (title()) {
+        <h5
+          class="alert-heading mb-0"
+          [id]="titleId()">
+          {{ title() }}
+        </h5>
+      }
+    </div>
 
     <p class="mb-0">
 

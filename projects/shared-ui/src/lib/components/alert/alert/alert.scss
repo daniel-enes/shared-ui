@@ -12,7 +12,13 @@
   }
 }
 
+.ui-alert__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .alert-icon {
-  margin-right: 0.5rem;
-  vertical-align: -0.125em;
+  flex-shrink: 0;
 }

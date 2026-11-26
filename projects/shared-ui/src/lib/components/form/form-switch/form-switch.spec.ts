@@ -84,7 +84,9 @@ describe('FormSwitch', () => {
     const container: HTMLElement | null = fixture.nativeElement
       .ownerDocument.getElementById(descriptionId!);
 
-    expect(container).toBeTruthy();
+    if (!container) {
+      throw new Error('Description container was not found');
+    }
     expect(container.tagName).toBe('DIV');
     expect(container.querySelector('ul')).toBeTruthy();
     expect(describedBy).toContain(descriptionId!);
