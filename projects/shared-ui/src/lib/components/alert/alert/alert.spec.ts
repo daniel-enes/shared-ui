@@ -13,6 +13,7 @@ import { UiAlert } from './alert';
       [variant]="variant()"
       [visible]="visible()"
       [dismissible]="dismissible()"
+      [dismissLabel]="dismissLabel()"
       (dismissed)="handleDismiss()"
     />
   `
@@ -28,6 +29,8 @@ class TestHostComponent {
   visible = signal(false);
 
   dismissible = signal(false);
+
+  dismissLabel = signal('Fechar');
 
   dismisses = signal(0);
 
@@ -288,6 +291,122 @@ describe('UiAlert', () => {
       fixture.nativeElement.querySelector('.ui-alert');
 
     expect(element.getAttribute('aria-labelledby')).toBeNull();
+  });
+
+  it('should use dismissLabel as the accessible name of the close button', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.dismissLabel.set('Fechar alerta');
+    fixture.componentInstance.dismissible.set(true);
+    fixture.componentInstance.visible.set(true);
+    fixture.detectChanges();
+
+    const close: HTMLButtonElement =
+      fixture.nativeElement.querySelector('.btn-close');
+
+    expect(close).toBeTruthy();
+    expect(close!.getAttribute('aria-label')).toBe('Fechar alerta');
+  });
+
+  it('should render the variant icon as decorative', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.variant.set('success');
+    fixture.componentInstance.visible.set(true);
+    fixture.detectChanges();
+
+    const icon = fixture.nativeElement.querySelector('.alert-icon');
+
+    expect(icon).toBeTruthy();
+    expect(icon!.classList).toContain('bi-check-circle-fill');
+    expect(icon!.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should render the correct icon for each variant', () => {
+    const variants: Array<[string, string]> = [
+      ['success', 'bi-check-circle-fill'],
+      ['info', 'bi-info-circle-fill'],
+      ['warning', 'bi-exclamation-triangle-fill'],
+      ['danger', 'bi-x-circle-fill']
+    ];
+
+    for (const [variant, expectedIcon] of variants) {
+      const fixture = TestBed.createComponent(TestHostComponent);
+
+      fixture.componentInstance.variant.set(variant as any);
+      fixture.componentInstance.visible.set(true);
+      fixture.detectChanges();
+
+      const icon = fixture.nativeElement.querySelector('.alert-icon');
+
+      expect(icon!.classList).toContain(expectedIcon);
+    }
+  });
+
+  it('should not change the alert when draft values change without applying', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.visible.set(true);
+    fixture.componentInstance.title.set('Título original');
+    fixture.componentInstance.message.set('Mensagem original');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    const element: HTMLElement =
+      fixture.nativeElement.querySelector('.ui-alert');
+
+    expect(document.activeElement).toBe(element);
+
+    // Muda os drafts (rascunho) sem aplicar
+    fixture.componentInstance.title.set('Título novo');
+    fixture.componentInstance.message.set('Mensagem nova');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    // O alerta não deve receber foco novamente porque o conteúdo efetivo não mudou
+    expect(document.activeElement).toBe(element);
+  });
+
+  it('should apply draft changes and receive focus when visible', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.visible.set(true);
+    fixture.componentInstance.title.set('Título original');
+    fixture.componentInstance.message.set('Mensagem original');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    const element: HTMLElement =
+      fixture.nativeElement.querySelector('.ui-alert');
+
+    // Muda os drafts e aplica
+    fixture.componentInstance.title.set('Título novo');
+    fixture.componentInstance.message.set('Mensagem nova');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    expect(document.activeElement).toBe(element);
+    expect(element.textContent).toContain('Título novo');
+    expect(element.textContent).toContain('Mensagem nova');
+  });
+
+  it('should not receive focus when not visible even after draft changes', () => {
+    const fixture = TestBed.createComponent(TestHostComponent);
+
+    fixture.componentInstance.visible.set(false);
+    fixture.componentInstance.title.set('Título novo');
+    fixture.componentInstance.message.set('Mensagem nova');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    const element = fixture.nativeElement.querySelector('.ui-alert');
+
+    expect(element).toBeFalsy();
   });
 
 });

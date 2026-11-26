@@ -21,6 +21,11 @@ export class AlertDemo {
 
   dismissedCount = signal(0);
 
+  // Drafts para edição sem aplicar imediatamente ao alerta
+  draftTitle = signal('Operação realizada');
+
+  draftMessage = signal('As alterações foram salvas com sucesso.');
+
   show(): void {
     this.visible.set(true);
   }
@@ -37,12 +42,17 @@ export class AlertDemo {
     this.variant.set(value);
   }
 
-  setTitle(value: string): void {
-    this.title.set(value);
+  setDraftTitle(value: string): void {
+    this.draftTitle.set(value);
   }
 
-  setMessage(value: string): void {
-    this.message.set(value);
+  setDraftMessage(value: string): void {
+    this.draftMessage.set(value);
+  }
+
+  applyChanges(): void {
+    this.title.set(this.draftTitle());
+    this.message.set(this.draftMessage());
   }
 
   onDismissed(): void {
@@ -53,6 +63,8 @@ export class AlertDemo {
   simulateNewOperation(): void {
     this.title.set('Registro atualizado');
     this.message.set('Os dados foram salvos com sucesso.');
+    this.draftTitle.set(this.title());
+    this.draftMessage.set(this.message());
     this.variant.set('success');
     this.visible.set(true);
   }

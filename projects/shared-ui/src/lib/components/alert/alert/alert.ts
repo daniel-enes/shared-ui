@@ -28,7 +28,6 @@ import { UiAlertVariant } from './alert-variant.model';
  */
 @Component({
   selector: 'ui-alert',
-  standalone: true,
   templateUrl: './alert.html',
   styleUrl: './alert.scss'
 })
@@ -51,6 +50,8 @@ export class UiAlert {
 
   readonly dismissible = input(false);
 
+  readonly dismissLabel = input('Fechar');
+
   // Outputs
   readonly dismissed = output<void>();
 
@@ -67,6 +68,21 @@ export class UiAlert {
     }
 
     return classes.join(' ');
+  });
+
+  readonly variantIcon = computed(() => {
+    switch (this.variant()) {
+      case 'success':
+        return 'bi-check-circle-fill';
+      case 'info':
+        return 'bi-info-circle-fill';
+      case 'warning':
+        return 'bi-exclamation-triangle-fill';
+      case 'danger':
+        return 'bi-x-circle-fill';
+      default:
+        return 'bi-info-circle-fill';
+    }
   });
 
   constructor() {
