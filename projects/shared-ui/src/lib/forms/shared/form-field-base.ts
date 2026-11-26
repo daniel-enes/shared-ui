@@ -68,8 +68,13 @@ export abstract class FormFieldBase<TValue> {
     () => `${this.resolvedInputId()}-description`
   );
 
+  readonly resolvedDescriptionItems = computed(
+    () => this.descriptionItems().filter((item) => item.trim() !== '')
+  );
+
   readonly hasDescription = computed(
-    () => !!this.description() || this.descriptionItems().length > 0
+    () => this.description().trim() !== '' ||
+      this.resolvedDescriptionItems().length > 0
   );
 
   readonly feedbackId = computed(

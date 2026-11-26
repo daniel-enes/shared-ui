@@ -30,9 +30,9 @@
         {{ description() }}
       }
 
-      @if (descriptionItems().length > 0) {
+      @if (resolvedDescriptionItems().length > 0) {
         <ul class="description-items">
-          @for (item of descriptionItems(); track item) {
+          @for (item of resolvedDescriptionItems(); track $index) {
             <li>{{ item }}</li>
           }
         </ul>

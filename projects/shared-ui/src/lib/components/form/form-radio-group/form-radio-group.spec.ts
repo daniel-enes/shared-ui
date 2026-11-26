@@ -11,6 +11,8 @@ import { FormRadioGroup } from './form-radio-group';
       [field]="testForm.gender"
       label="Gênero"
       [options]="options"
+      [description]="description()"
+      [descriptionItems]="descriptionItems()"
     />
   `
 })
@@ -20,6 +22,10 @@ class TestHostComponent {
     { label: 'Feminino', value: 'F' },
     { label: 'Outro', value: 'O' }
   ];
+
+  description = signal('Selecione uma opção.');
+
+  descriptionItems = signal<readonly string[]>(['Item 1', 'Item 2']);
 
   model = signal({
     gender: 'M'
@@ -134,10 +140,28 @@ describe('FormRadioGroup', () => {
 
     await fixture.whenStable();
     fixture.detectChanges();
-
     const selectedRadios = radios.filter(radio => radio.checked);
 
     expect(selectedRadios.length).toBe(1);
     expect(selectedRadios[0].value).toBe('F');
   });
+
+  it('should associate the description container with the radio group using aria-describedby', () => {
+    const fieldset: HTMLFieldSetElement =
+      fixture.nativeElement.querySelector('fieldset');
+
+    const describedBy = fieldset.getAttribute('aria-describedby')?.split(' ') ?? [];
+    const descriptionId = describedBy.find((id) => id.endsWith('-description'));
+
+    expect(descriptionId).toBeTruthy();
+
+    const container: HTMLElement | null = fixture.nativeElement
+      .ownerDocument.getElementById(descriptionId!);
+
+    expect(container).toBeTruthy();
+    expect(container.tagName).toBe('DIV');
+    expect(container.querySelector('ul')).toBeTruthy();
+    expect(describedBy).toContain(descriptionId!);
+  });
+
 });

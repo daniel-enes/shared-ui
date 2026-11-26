@@ -133,17 +133,45 @@ describe('FormTextarea', () => {
     const textarea: HTMLTextAreaElement =
       fixture.nativeElement.querySelector('textarea');
 
-    const list: HTMLUListElement | null =
+    const container: HTMLElement | null =
       fixture.nativeElement.ownerDocument.getElementById(
         `${textarea.id}-description`
       );
 
+    expect(container).toBeTruthy();
+    expect(container.tagName).toBe('DIV');
+
+    const list: HTMLUListElement | null = container!.querySelector('ul');
     expect(list).toBeTruthy();
 
     const items = list!.querySelectorAll('li');
     expect(items).toHaveLength(2);
     expect(items[0].textContent).toContain('Apenas arquivos PDF');
     expect(items[1].textContent).toContain('Tamanho máximo de 5 MB');
+  });
+
+  it('should display only description items without description text', () => {
+    fixture.componentInstance.description.set('');
+    fixture.componentInstance.descriptionItems.set([
+      'Apenas arquivos PDF',
+      'Tamanho máximo de 5 MB'
+    ]);
+    fixture.detectChanges();
+
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
+
+    const container: HTMLElement | null =
+      fixture.nativeElement.ownerDocument.getElementById(
+        `${textarea.id}-description`
+      );
+
+    expect(container).toBeTruthy();
+    expect(container!.textContent).not.toContain('Informe uma descrição detalhada.');
+
+    const list: HTMLUListElement | null = container!.querySelector('ul');
+    expect(list).toBeTruthy();
+    expect(list.querySelectorAll('li')).toHaveLength(2);
   });
 
   it('should associate the description items list with the textarea using aria-describedby', () => {
@@ -160,11 +188,12 @@ describe('FormTextarea', () => {
 
     expect(descriptionId).toBeTruthy();
 
-    const list: HTMLElement | null = fixture.nativeElement
+    const container: HTMLElement | null = fixture.nativeElement
       .ownerDocument.getElementById(descriptionId!);
 
-    expect(list).toBeTruthy();
-    expect(list.tagName).toBe('UL');
+    expect(container).toBeTruthy();
+    expect(container.tagName).toBe('DIV');
+    expect(container.querySelector('ul')).toBeTruthy();
     expect(describedBy).toContain(descriptionId!);
   });
 

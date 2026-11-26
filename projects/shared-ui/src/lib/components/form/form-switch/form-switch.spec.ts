@@ -10,6 +10,8 @@ import { FormSwitch } from './form-switch';
     <ui-form-switch
       [field]="testForm.notifications"
       label="Receber notificações"
+      [description]="description()"
+      [descriptionItems]="descriptionItems()"
     />
   `
 })
@@ -17,6 +19,10 @@ class TestHostComponent {
   model = signal({
     notifications: false
   });
+
+  description = signal('Ative para receber notificações.');
+
+  descriptionItems = signal<readonly string[]>(['Item 1', 'Item 2']);
 
   testForm = form(this.model);
 }
@@ -64,6 +70,24 @@ describe('FormSwitch', () => {
       fixture.nativeElement.querySelector('input');
 
     expect(input.getAttribute('role')).toBe('switch');
+  });
+
+  it('should associate the description container with the switch using aria-describedby', () => {
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('input');
+
+    const describedBy = input.getAttribute('aria-describedby')?.split(' ') ?? [];
+    const descriptionId = describedBy.find((id) => id.endsWith('-description'));
+
+    expect(descriptionId).toBeTruthy();
+
+    const container: HTMLElement | null = fixture.nativeElement
+      .ownerDocument.getElementById(descriptionId!);
+
+    expect(container).toBeTruthy();
+    expect(container.tagName).toBe('DIV');
+    expect(container.querySelector('ul')).toBeTruthy();
+    expect(describedBy).toContain(descriptionId!);
   });
 
   it('should reflect the initial value from the model', () => {
