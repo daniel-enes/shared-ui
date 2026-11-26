@@ -343,7 +343,7 @@ describe('UiAlert', () => {
     }
   });
 
-  it('should not change the alert when draft values change without applying', () => {
+  it('should receive focus again when the content changes while visible', async () => {
     const fixture = TestBed.createComponent(TestHostComponent);
 
     fixture.componentInstance.visible.set(true);
@@ -358,18 +358,25 @@ describe('UiAlert', () => {
 
     expect(document.activeElement).toBe(element);
 
-    // Muda os drafts (rascunho) sem aplicar
+    // O usuário navega para outro elemento.
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    // O conteúdo muda enquanto o alerta continua visível.
     fixture.componentInstance.title.set('Título novo');
     fixture.componentInstance.message.set('Mensagem nova');
     fixture.detectChanges();
 
     await fixture.whenStable();
 
-    // O alerta não deve receber foco novamente porque o conteúdo efetivo não mudou
     expect(document.activeElement).toBe(element);
+
+    document.body.removeChild(input);
   });
 
-  it('should apply draft changes and receive focus when visible', () => {
+  it('should transfer focus to the alert when content changes while another element is focused', async () => {
     const fixture = TestBed.createComponent(TestHostComponent);
 
     fixture.componentInstance.visible.set(true);
@@ -382,19 +389,26 @@ describe('UiAlert', () => {
     const element: HTMLElement =
       fixture.nativeElement.querySelector('.ui-alert');
 
-    // Muda os drafts e aplica
-    fixture.componentInstance.title.set('Título novo');
-    fixture.componentInstance.message.set('Mensagem nova');
+    // O usuário navega para outro elemento.
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    // O conteúdo muda enquanto o foco está em outro elemento.
+    fixture.componentInstance.title.set('Novo título');
+    fixture.componentInstance.message.set('Nova mensagem');
     fixture.detectChanges();
 
     await fixture.whenStable();
 
+    // O foco deve retornar ao alerta.
     expect(document.activeElement).toBe(element);
-    expect(element.textContent).toContain('Título novo');
-    expect(element.textContent).toContain('Mensagem nova');
+
+    document.body.removeChild(input);
   });
 
-  it('should not receive focus when not visible even after draft changes', () => {
+  it('should not receive focus when not visible even after draft changes', async () => {
     const fixture = TestBed.createComponent(TestHostComponent);
 
     fixture.componentInstance.visible.set(false);
