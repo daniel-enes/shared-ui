@@ -15,14 +15,19 @@ export class ThemeService {
 
   readonly theme = signal<Theme>(this.storedTheme ?? 'system');
 
+  private readonly prefersColorSchemeSignal = signal<'light' | 'dark'>(
+    typeof window !== 'undefined' && window.matchMedia
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+      : 'light'
+  );
+
   readonly effectiveTheme = computed<'light' | 'dark'>(() => {
     const current = this.theme();
 
     if (current === 'system') {
-      if (typeof window !== 'undefined' && window.matchMedia) {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      return 'light';
+      return this.prefersColorSchemeSignal();
     }
 
     return current;
@@ -36,23 +41,28 @@ export class ThemeService {
     });
 
     if (typeof window !== 'undefined' && window.matchMedia) {
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-        if (this.theme() === 'system') {
-          this.document.documentElement.setAttribute(
-            'data-theme',
-            window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-          );
-        }
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+      mediaQuery.addEventListener('change', () => {
+        this.prefersColorSchemeSignal.set(
+          mediaQuery.matches ? 'dark' : 'light'
+        );
       });
     }
 
     if (typeof window !== 'undefined' && window.addEventListener) {
       window.addEventListener('storage', (event: StorageEvent) => {
-        if (event.key === STORAGE_KEY && event.newValue) {
-          const value = event.newValue;
-          if (value === 'system' || value === 'light' || value === 'dark') {
-            this.theme.set(value);
-          }
+        if (event.key !== STORAGE_KEY) {
+          return;
+        }
+
+        if (event.newValue === null) {
+          this.theme.set('system');
+          return;
+        }
+
+        if (event.newValue === 'system' || event.newValue === 'light' || event.newValue === 'dark') {
+          this.theme.set(event.newValue);
         }
       });
     }
