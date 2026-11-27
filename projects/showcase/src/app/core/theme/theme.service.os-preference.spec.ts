@@ -7,9 +7,15 @@ describe('ThemeService OS preference reactivity', () => {
 
   let service: ThemeService;
   let mediaQueryMock: { matches: boolean; listeners: Array<() => void> };
+  let originalMatchMedia: typeof window.matchMedia | undefined;
 
   beforeEach(() => {
+    localStorage.clear();
+
     mediaQueryMock = { matches: false, listeners: [] };
+
+    // Salva o matchMedia original antes de sobrescrever
+    originalMatchMedia = window.matchMedia;
 
     // Define matchMedia diretamente no window (evita problemas com vi.spyOn)
     (window as any).matchMedia = () => ({
@@ -34,8 +40,12 @@ describe('ThemeService OS preference reactivity', () => {
     });
 
     service = TestBed.inject(ThemeService);
+  });
 
-    localStorage.clear();
+  afterEach(() => {
+    if (originalMatchMedia) {
+      (window as any).matchMedia = originalMatchMedia;
+    }
   });
 
   it('should update effective theme when OS preference changes while theme is system', () => {

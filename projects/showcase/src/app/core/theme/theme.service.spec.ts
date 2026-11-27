@@ -8,6 +8,8 @@ describe('ThemeService', () => {
   let service: ThemeService;
 
   beforeEach(() => {
+    localStorage.clear();
+
     TestBed.configureTestingModule({
       providers: [
         ThemeService,
@@ -19,8 +21,6 @@ describe('ThemeService', () => {
     });
 
     service = TestBed.inject(ThemeService);
-
-    localStorage.clear();
   });
 
   it('should initialize with system theme when nothing stored', () => {
