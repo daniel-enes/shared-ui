@@ -28,6 +28,11 @@
   display: none;
 }
 
+:host-context([data-theme="light"]) .docs-header__logo--dark,
+:host-context([data-theme="dark"]) .docs-header__logo--light {
+  display: none;
+}
+
 .docs-header__nav {
   display: flex;
   align-items: center;
