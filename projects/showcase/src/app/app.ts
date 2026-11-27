@@ -1,12 +1,12 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+
+import { DocsLayoutComponent } from './core/layout/docs-layout.component';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
+  imports: [DocsLayoutComponent],
+  standalone: true,
   styleUrl: './app.scss',
-  templateUrl: './app.html',
+  template: `<app-docs-layout />`,
 })
-export class App {
-  protected readonly title = signal('showcase');
-}
+export class App {}

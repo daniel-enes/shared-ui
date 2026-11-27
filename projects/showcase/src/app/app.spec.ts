@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+
 import { App } from './app';
+
+import { DocsLayoutComponent } from './core/layout/docs-layout.component';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -14,10 +17,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should render docs layout component', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, showcase');
+    expect(compiled.querySelector('app-docs-layout')).toBeTruthy();
   });
 });

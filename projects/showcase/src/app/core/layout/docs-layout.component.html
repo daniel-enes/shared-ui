@@ -1,0 +1,34 @@
+<header class="docs-header">
+  <div class="docs-header__container">
+    <a class="docs-header__brand" routerLink="/en/docs/getting-started/introduction">
+      shared-ui
+    </a>
+
+    <nav class="docs-header__nav">
+      <app-theme-toggle />
+    </nav>
+  </div>
+</header>
+
+<div class="docs-body">
+
+  <aside class="docs-sidebar" aria-label="Navegação principal">
+    <nav class="docs-sidebar__nav">
+      <!-- Navegação hierárquica será preenchida na Etapa 2 -->
+      <div class="docs-sidebar__placeholder">
+        Navegação por seções
+      </div>
+    </nav>
+  </aside>
+
+  <main class="docs-content" id="main-content">
+    <router-outlet />
+  </main>
+
+  <aside class="docs-toc" aria-label="Nesta página">
+    <div class="docs-toc__placeholder">
+      Seções desta página
+    </div>
+  </aside>
+
+</div>

@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+/* Variáveis de tema globais — sobrescritas do Bootstrap e estilos de documentação */
+
+:root {
+  --docs-bg-body: #ffffff;
+  --docs-bg-surface: #f8f9fa;
+  --docs-text-main: #212529;
+  --docs-text-muted: #6c757d;
+  --docs-border-color: #dee2e6;
+  --docs-sidebar-bg: #f8f9fa;
+  --docs-toc-bg: #f8f9fa;
+  --docs-code-bg: #f4f4f4;
+  --docs-code-text: #d63384;
+}
+
+[data-theme="dark"] {
+  --docs-bg-body: #1a1a1a;
+  --docs-bg-surface: #2d2d2d;
+  --docs-text-main: #e9ecef;
+  --docs-text-muted: #adb5bd;
+  --docs-border-color: #495057;
+  --docs-sidebar-bg: #2d2d2d;
+  --docs-toc-bg: #2d2d2d;
+  --docs-code-bg: #3a3a3a;
+  --docs-code-text: #ff9eff;
+}
+
+body {
+  background-color: var(--docs-bg-body);
+  color: var(--docs-text-main);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.docs-header {
+  background-color: var(--docs-bg-surface);
+  border-bottom: 1px solid var(--docs-border-color);
+}

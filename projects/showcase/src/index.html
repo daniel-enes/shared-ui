@@ -6,6 +6,32 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Inicialização de tema antes do bootstrap do Angular para evitar flash -->
+    <script>
+      (function () {
+        var STORAGE_KEY = 'shared-ui-theme';
+        var html = document.documentElement;
+        var saved = null;
+
+        try {
+          saved = localStorage.getItem(STORAGE_KEY);
+        } catch (e) {
+          saved = null;
+        }
+
+        if (saved === 'system' || saved === 'light' || saved === 'dark') {
+          if (saved === 'system') {
+            var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            html.setAttribute('data-theme', dark ? 'dark' : 'light');
+          } else {
+            html.setAttribute('data-theme', saved);
+          }
+        } else {
+          var darkDefault = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          html.setAttribute('data-theme', darkDefault ? 'dark' : 'light');
+        }
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>

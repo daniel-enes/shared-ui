@@ -1,0 +1,14 @@
+<button
+  type="button"
+  class="btn btn-sm theme-toggle"
+  (click)="toggleTheme()"
+  [attr.aria-label]="ariaLabel()"
+>
+  @if (theme() === 'system') {
+    <span class="theme-toggle__icon">auto</span>
+  } @else if (theme() === 'light') {
+    <span class="theme-toggle__icon">☀</span>
+  } @else {
+    <span class="theme-toggle__icon">☾</span>
+  }
+</button>
