@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { RouterLink, RouterOutlet } from '@angular/router';
 
+import { LangSyncService } from '../i18n/lang-sync.service';
 import { ThemeToggleComponent } from '../theme/theme-toggle.component';
 import { LangSwitchComponent } from '../i18n/lang-switch.component';
 import { SidebarNavComponent } from '../navigation/sidebar-nav.component';
@@ -21,4 +22,8 @@ import { PageTocComponent } from '../navigation/page-toc.component';
   styleUrl: './docs-layout.component.scss',
   templateUrl: './docs-layout.component.html',
 })
-export class DocsLayoutComponent {}
+export class DocsLayoutComponent {
+
+  private readonly langSync = inject(LangSyncService);
+
+}

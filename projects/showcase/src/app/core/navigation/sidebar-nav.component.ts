@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+
+import { TranslocoService } from '@jsverse/transloco';
 
 import { NAV_ITEMS, type NavItem } from './nav-items';
 
@@ -12,7 +14,13 @@ import { NAV_ITEMS, type NavItem } from './nav-items';
 })
 export class SidebarNavComponent {
 
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly transloco = inject(TranslocoService);
+
   readonly navItems = NAV_ITEMS;
+
+  readonly currentLang = this.route.snapshot.paramMap.get('lang') ?? 'en';
 
   isCollapsed = false;
 
@@ -26,9 +34,14 @@ export class SidebarNavComponent {
     item.children = item.children ? undefined : item.children;
   }
 
-  getLabel(label: string): string {
+  getLabel(key: string): string {
 
-    return label;
+    return this.transloco.translate(key);
+  }
+
+  linkFor(path: string): string {
+
+    return `/${this.currentLang}/docs/${path}`;
   }
 
 }

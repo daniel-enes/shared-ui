@@ -50,7 +50,7 @@
                           <li class="docs-sidebar__grandchild">
                             <a
                               class="docs-sidebar__link"
-                              [routerLink]="'/:lang/docs/' + grandchild.path"
+                              [routerLink]="linkFor(grandchild.path!)"
                               routerLinkActive="docs-sidebar__link--active"
                             >
                               {{ getLabel(grandchild.label) }}
@@ -62,7 +62,7 @@
                   } @else {
                     <a
                       class="docs-sidebar__link"
-                      [routerLink]="'/:lang/docs/' + child.path"
+                      [routerLink]="linkFor(child.path!)"
                       routerLinkActive="docs-sidebar__link--active"
                     >
                       {{ getLabel(child.label) }}

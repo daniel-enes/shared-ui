@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 
+import { Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
@@ -13,6 +14,8 @@ export class LangSwitchComponent {
 
   private readonly transloco = inject(TranslocoService);
 
+  private readonly router = inject(Router);
+
   readonly langs = ['en', 'pt-BR'];
 
   readonly activeLang = signal(this.transloco.getActiveLang());
@@ -20,6 +23,12 @@ export class LangSwitchComponent {
   readonly isOpen = signal(false);
 
   setLang(lang: string): void {
+
+    const currentUrl = this.router.url;
+
+    const pathWithoutLang = currentUrl.replace(/^\/[a-z]{2}(?:-[A-Z]{2})?/, '') || '/';
+
+    this.router.navigateByUrl(`/${lang}${pathWithoutLang}`);
 
     this.transloco.setActiveLang(lang);
 

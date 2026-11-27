@@ -10,48 +10,48 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
 
   {
-    label: 'Getting Started',
+    label: 'nav.gettingStarted',
     children: [
-      { label: 'Introduction', path: 'getting-started/introduction' },
-      { label: 'Installation', path: 'getting-started/installation' },
-      { label: 'Configuration', path: 'getting-started/configuration' },
-      { label: 'Accessibility', path: 'getting-started/accessibility' },
+      { label: 'nav.introduction', path: 'getting-started/introduction' },
+      { label: 'nav.installation', path: 'getting-started/installation' },
+      { label: 'nav.configuration', path: 'getting-started/configuration' },
+      { label: 'nav.accessibility', path: 'getting-started/accessibility' },
     ],
   },
 
   {
-    label: 'Components',
+    label: 'nav.components',
     children: [
-      { label: 'Alerts', children: [{ label: 'UiAlert', path: 'components/alerts/uialert' }] },
-      { label: 'Buttons', children: [
-        { label: 'UiButton', path: 'components/buttons/uibutton' },
-        { label: 'UiButtonLink', path: 'components/buttons/uibutton-link' },
+      { label: 'nav.alerts', children: [{ label: 'nav.uiAlert', path: 'components/alerts/uialert' }] },
+      { label: 'nav.buttons', children: [
+        { label: 'nav.uiButton', path: 'components/buttons/uibutton' },
+        { label: 'nav.uiButtonLink', path: 'components/buttons/uibutton-link' },
       ] },
-      { label: 'Forms', children: [
-        { label: 'FormInput', path: 'components/forms/form-input' },
-        { label: 'FormTextarea', path: 'components/forms/form-textarea' },
-        { label: 'FormSelect', path: 'components/forms/form-select' },
-        { label: 'FormNumber', path: 'components/forms/form-number' },
-        { label: 'FormDate', path: 'components/forms/form-date' },
-        { label: 'FormTime', path: 'components/forms/form-time' },
-        { label: 'FormDateTime', path: 'components/forms/form-date-time' },
-        { label: 'FormCheckbox', path: 'components/forms/form-checkbox' },
-        { label: 'FormRadioGroup', path: 'components/forms/form-radio-group' },
-        { label: 'FormSwitch', path: 'components/forms/form-switch' },
-        { label: 'FormFieldGroup', path: 'components/forms/form-field-group' },
-        { label: 'FormFile', path: 'components/forms/form-file' },
-        { label: 'FormAlert', path: 'components/forms/form-alert' },
-        { label: 'FormContextDirective', path: 'components/forms/form-context' },
+      { label: 'nav.forms', children: [
+        { label: 'nav.formInput', path: 'components/forms/form-input' },
+        { label: 'nav.formTextarea', path: 'components/forms/form-textarea' },
+        { label: 'nav.formSelect', path: 'components/forms/form-select' },
+        { label: 'nav.formNumber', path: 'components/forms/form-number' },
+        { label: 'nav.formDate', path: 'components/forms/form-date' },
+        { label: 'nav.formTime', path: 'components/forms/form-time' },
+        { label: 'nav.formDateTime', path: 'components/forms/form-date-time' },
+        { label: 'nav.formCheckbox', path: 'components/forms/form-checkbox' },
+        { label: 'nav.formRadioGroup', path: 'components/forms/form-radio-group' },
+        { label: 'nav.formSwitch', path: 'components/forms/form-switch' },
+        { label: 'nav.formFieldGroup', path: 'components/forms/form-field-group' },
+        { label: 'nav.formFile', path: 'components/forms/form-file' },
+        { label: 'nav.formAlert', path: 'components/forms/form-alert' },
+        { label: 'nav.formContext', path: 'components/forms/form-context' },
       ] },
     ],
   },
 
   {
-    label: 'Development',
+    label: 'nav.development',
     children: [
-      { label: 'Testing', path: 'development/testing' },
-      { label: 'Themes', path: 'development/themes' },
-      { label: 'Customization', path: 'development/customization' },
+      { label: 'nav.testing', path: 'development/testing' },
+      { label: 'nav.themes', path: 'development/themes' },
+      { label: 'nav.customization', path: 'development/customization' },
     ],
   },
 

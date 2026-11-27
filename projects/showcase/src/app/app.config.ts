@@ -2,6 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { ThemeService } from './core/theme/theme.service';
+import { LangSyncService } from './core/i18n/lang-sync.service';
 import { provideTransloco } from '@jsverse/transloco';
 import { HttpClient } from '@angular/common/http';
 import { TranslocoHttpLoader } from './core/i18n/transloco-loader';
@@ -11,6 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     ThemeService,
+    LangSyncService,
     HttpClient,
     provideTransloco({
       config: {

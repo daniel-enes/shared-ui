@@ -1,0 +1,30 @@
+.not-translated-notice {
+  background-color: var(--docs-bg-surface);
+  border: 1px solid var(--docs-border-color);
+  border-left: 4px solid var(--docs-focus-ring);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  color: var(--docs-text-muted);
+}
+
+.not-translated-notice__message {
+  margin: 0 0 0.5rem 0;
+}
+
+.not-translated-notice__link {
+  color: var(--docs-focus-ring);
+  text-decoration: underline;
+  font-size: 0.875rem;
+}
+
+.not-translated-notice__link:hover,
+.not-translated-notice__link:focus {
+  opacity: 0.85;
+}
+
+.not-translated-notice__link:focus-visible {
+  outline: 2px solid var(--docs-focus-ring);
+  outline-offset: 2px;
+}

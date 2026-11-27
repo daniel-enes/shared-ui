@@ -5,6 +5,7 @@ import { App } from './app';
 import { routes } from './app.routes';
 
 import { provideTransloco } from '@jsverse/transloco';
+import { HttpClient } from '@angular/common/http';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -18,12 +19,19 @@ describe('App', () => {
             defaultLang: 'en',
             fallbackLang: 'en',
             missingHandler: {
+              logMissingKey: false,
               useFallbackTranslation: true,
+              allowEmpty: false,
             },
             reRenderOnLangChange: true,
             prodMode: false,
+            failedRetries: 0,
+            flatten: { aot: false },
+            interpolation: ['{{', '}}'],
+            scopes: {},
           },
         }),
+        HttpClient,
       ],
     }).compileComponents();
   });
