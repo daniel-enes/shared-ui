@@ -1,0 +1,120 @@
+<article class="doc-page">
+
+  <header class="doc-page__header">
+    <h1 id="uialert">UiAlert</h1>
+    <p class="doc-page__lead">Display alert messages to users.</p>
+  </header>
+
+  <section class="doc-section" id="when-to-use">
+    <h2>When to use</h2>
+    <p>Use when you need to communicate success, info, warning, or danger messages.</p>
+  </section>
+
+  <section class="doc-section" id="demo">
+    <h2>Demonstration</h2>
+    <div class="demo">
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Success</h4>
+        <p>Your changes have been saved successfully.</p>
+      </div>
+      <div class="alert alert-info mt-3" role="alert">
+        <h4 class="alert-heading">Information</h4>
+        <p>Please review the updated terms of service.</p>
+      </div>
+      <div class="alert alert-warning mt-3" role="alert">
+        <h4 class="alert-heading">Warning</h4>
+        <p>Your session will expire in 5 minutes.</p>
+      </div>
+      <div class="alert alert-danger mt-3" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <p>An unexpected error occurred. Please try again.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="code">
+    <h2>Code example</h2>
+    <pre><code class="language-html">&lt;ui-alert
+  [title]="&quot;Success&quot;"
+  [message]="&quot;Your changes have been saved successfully.&quot;"
+  [variant]="&quot;success&quot;"
+  [visible]="true"
+  [dismissible]="true"
+  (dismissed)="onDismissed()">
+&lt;/ui-alert></code></pre>
+  </section>
+
+  <section class="doc-section" id="inputs">
+    <h2>Inputs</h2>
+    <table class="props-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td>string</td>
+          <td>''</td>
+          <td>Alert title.</td>
+        </tr>
+        <tr>
+          <td><code>message</code></td>
+          <td>string</td>
+          <td>''</td>
+          <td>Alert message.</td>
+        </tr>
+        <tr>
+          <td><code>variant</code></td>
+          <td>'success' | 'info' | 'warning' | 'danger'</td>
+          <td>'success'</td>
+          <td>Visual variant of the alert.</td>
+        </tr>
+        <tr>
+          <td><code>visible</code></td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Whether the alert is visible.</td>
+        </tr>
+        <tr>
+          <td><code>dismissible</code></td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Whether the alert can be dismissed.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="outputs">
+    <h2>Outputs</h2>
+    <table class="props-table">
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>dismissed</code></td>
+          <td>Emitted when the alert is dismissed.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="accessibility">
+    <h2>Accessibility</h2>
+    <ul>
+      <li>Receives programmatic focus when it appears.</li>
+      <li>Uses <code>role="alert"</code> for screen readers.</li>
+      <li>Dismiss button is keyboard accessible.</li>
+    </ul>
+  </section>
+
+</article>

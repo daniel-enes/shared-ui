@@ -1,0 +1,79 @@
+<article class="doc-page">
+
+  <header class="doc-page__header">
+    <h1 id="form-textarea">FormTextarea</h1>
+    <p class="doc-page__lead">Multi-line text input field.</p>
+  </header>
+
+  <section class="doc-section" id="when-to-use">
+    <h2>When to use</h2>
+    <p>Use for longer text input.</p>
+  </section>
+
+  <section class="doc-section" id="demo">
+    <h2>Demonstration</h2>
+    <div class="demo">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" rows="4" placeholder="Enter details..."></textarea>
+    </div>
+  </section>
+
+  <section class="doc-section" id="code">
+    <h2>Code example</h2>
+    <pre><code class="language-html">&lt;ui-form-textarea
+  [field]="form.description"
+  label="Description"
+  placeholder="Enter details..."
+  fieldName="description">
+&lt;/ui-form-textarea></code></pre>
+  </section>
+
+  <section class="doc-section" id="inputs">
+    <h2>Inputs</h2>
+    <table class="props-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>field</code></td>
+          <td>FieldTree&lt;string&gt;</td>
+          <td>Required</td>
+          <td>Signal form field.</td>
+        </tr>
+        <tr>
+          <td><code>label</code></td>
+          <td>string</td>
+          <td>''</td>
+          <td>Field label.</td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td>string</td>
+          <td>''</td>
+          <td>Field description text.</td>
+        </tr>
+        <tr>
+          <td><code>rows</code></td>
+          <td>number</td>
+          <td>4</td>
+          <td>Number of text rows.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="accessibility">
+    <h2>Accessibility</h2>
+    <ul>
+      <li>Associated <code>&lt;label&gt;</code> via <code>for</code> attribute.</li>
+      <li>Description linked via <code>aria-describedby</code>.</li>
+    </ul>
+  </section>
+
+</article>

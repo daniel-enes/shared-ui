@@ -1,0 +1,42 @@
+.doc-page {
+  max-width: 800px;
+}
+
+.doc-page__header {
+  margin-bottom: 2rem;
+}
+
+.doc-page__lead {
+  font-size: 1.125rem;
+  color: var(--docs-text-muted);
+}
+
+.doc-section {
+  margin-bottom: 2.5rem;
+}
+
+.doc-section h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--docs-text-main);
+}
+
+.doc-section p {
+  color: var(--docs-text-main);
+  line-height: 1.6;
+}
+
+.doc-section pre {
+  background-color: var(--docs-code-bg);
+  border: 1px solid var(--docs-border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.doc-section code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+}

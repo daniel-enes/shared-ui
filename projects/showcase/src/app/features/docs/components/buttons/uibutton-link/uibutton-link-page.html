@@ -1,0 +1,64 @@
+<article class="doc-page">
+
+  <header class="doc-page__header">
+    <h1 id="uibutton-link">UiButtonLink</h1>
+    <p class="doc-page__lead">Button styled as a link.</p>
+  </header>
+
+  <section class="doc-section" id="when-to-use">
+    <h2>When to use</h2>
+    <p>Use for secondary actions or navigation.</p>
+  </section>
+
+  <section class="doc-section" id="demo">
+    <h2>Demonstration</h2>
+    <div class="demo">
+      <a href="#" class="btn btn-link">Button link</a>
+    </div>
+  </section>
+
+  <section class="doc-section" id="code">
+    <h2>Code example</h2>
+    <pre><code class="language-html">&lt;ui-button-link [routerLink]="&quot;/en/docs/getting-started/introduction&quot;">
+  Go to introduction
+&lt;/ui-button-link></code></pre>
+  </section>
+
+  <section class="doc-section" id="inputs">
+    <h2>Inputs</h2>
+    <table class="props-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>routerLink</code></td>
+          <td>any</td>
+          <td>undefined</td>
+          <td>Router link target.</td>
+        </tr>
+        <tr>
+          <td><code>target</code></td>
+          <td>string</td>
+          <td>'_self'</td>
+          <td>Link target.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="accessibility">
+    <h2>Accessibility</h2>
+    <ul>
+      <li>Rendered as an <code>&lt;a&gt;</code> element.</li>
+      <li>Keyboard navigable.</li>
+      <li>Visible focus indicator.</li>
+    </ul>
+  </section>
+
+</article>

@@ -10,20 +10,21 @@
         src="assets/images/shared-ui-logo.svg"
         alt=""
         aria-hidden="true"
-        width="180"
-        height="42"
+        width="270"
+        height="63"
       />
       <img
         class="docs-header__logo docs-header__logo--dark"
         src="assets/images/shared-ui-logo-dark.svg"
         alt=""
         aria-hidden="true"
-        width="180"
-        height="42"
+        width="270"
+        height="63"
       />
     </a>
 
     <nav class="docs-header__nav">
+      <app-lang-switch />
       <app-theme-toggle />
     </nav>
   </div>
@@ -31,23 +32,16 @@
 
 <div class="docs-body">
 
-  <aside class="docs-sidebar" aria-label="Navegação principal">
-    <nav class="docs-sidebar__nav">
-      <!-- Navegação hierárquica será preenchida na Etapa 2 -->
-      <div class="docs-sidebar__placeholder">
-        Navegação por seções
-      </div>
-    </nav>
+  <aside class="docs-sidebar" aria-label="Main navigation">
+    <app-sidebar-nav />
   </aside>
 
   <main class="docs-content" id="main-content">
     <router-outlet />
   </main>
 
-  <aside class="docs-toc" aria-label="Nesta página">
-    <div class="docs-toc__placeholder">
-      Seções desta página
-    </div>
+  <aside class="docs-toc" aria-label="On this page">
+    <app-page-toc />
   </aside>
 
 </div>

@@ -1,0 +1,88 @@
+<article class="doc-page">
+
+  <header class="doc-page__header">
+    <h1 id="form-input">FormInput</h1>
+    <p class="doc-page__lead">Text input field with validation and description support.</p>
+  </header>
+
+  <section class="doc-section" id="when-to-use">
+    <h2>When to use</h2>
+    <p>Use for single-line text input in forms.</p>
+  </section>
+
+  <section class="doc-section" id="demo">
+    <h2>Demonstration</h2>
+    <div class="demo">
+      <label class="form-label">Username</label>
+      <input type="text" class="form-control" placeholder="Enter your username" />
+      <div class="form-text mt-2">Use at least 8 characters.</div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="code">
+    <h2>Code example</h2>
+    <pre><code class="language-html">&lt;ui-form-input
+  [field]="form.username"
+  label="Username"
+  placeholder="Enter your username"
+  description="Use at least 8 characters."
+  fieldName="username">
+&lt;/ui-form-input></code></pre>
+  </section>
+
+  <section class="doc-section" id="inputs">
+    <h2>Inputs</h2>
+    <table class="props-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>field</code></td>
+          <td>FieldTree&lt;string&gt;</td>
+          <td>Required</td>
+          <td>Signal form field.</td>
+        </tr>
+        <tr>
+          <td><code>label</code></td>
+          <td>string</td>
+          <td>''</td>
+          <td>Field label.</td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td>string</td>
+          <td>''</td>
+          <td>Field description text.</td>
+        </tr>
+        <tr>
+          <td><code>descriptionItems</code></td>
+          <td>readonly string[]</td>
+          <td>[]</td>
+          <td>List of description items.</td>
+        </tr>
+        <tr>
+          <td><code>placeholder</code></td>
+          <td>string</td>
+          <td>''</td>
+          <td>Input placeholder.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="accessibility">
+    <h2>Accessibility</h2>
+    <ul>
+      <li>Associated <code>&lt;label&gt;</code> via <code>for</code> attribute.</li>
+      <li>Description linked via <code>aria-describedby</code>.</li>
+      <li>Error state uses <code>aria-invalid="true"</code>.</li>
+    </ul>
+  </section>
+
+</article>

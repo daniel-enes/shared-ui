@@ -1,0 +1,151 @@
+{
+  "common": {
+    "skipToContent": "Pular para o conteúdo principal",
+    "theme": "Tema",
+    "language": "Idioma",
+    "english": "Inglês",
+    "portuguese": "Português",
+    "onThisPage": "Nesta página",
+    "notAvailable": "Esta página não está disponível em {{lang}} ainda.",
+    "viewAvailableVersion": "Ver versão disponível",
+    "home": "Início",
+    "github": "GitHub"
+  },
+  "nav": {
+    "gettingStarted": "Começando",
+    "introduction": "Introdução",
+    "installation": "Instalação",
+    "configuration": "Configuração",
+    "accessibility": "Acessibilidade",
+    "components": "Componentes",
+    "alerts": "Alertas",
+    "uiAlert": "UiAlert",
+    "buttons": "Botões",
+    "uiButton": "UiButton",
+    "uiButtonLink": "UiButtonLink",
+    "forms": "Formulários",
+    "formInput": "FormInput",
+    "formTextarea": "FormTextarea",
+    "formSelect": "FormSelect",
+    "formNumber": "FormNumber",
+    "formDate": "FormDate",
+    "formTime": "FormTime",
+    "formDateTime": "FormDateTime",
+    "formCheckbox": "FormCheckbox",
+    "formRadioGroup": "FormRadioGroup",
+    "formSwitch": "FormSwitch",
+    "formFieldGroup": "FormFieldGroup",
+    "formFile": "FormFile",
+    "formAlert": "FormAlert",
+    "formContext": "FormContextDirective",
+    "development": "Desenvolvimento",
+    "testing": "Testes",
+    "themes": "Temas",
+    "customization": "Personalização"
+  },
+  "getting-started": {
+    "introduction": {
+      "title": "Introdução",
+      "description": "Conheça a shared-ui, uma biblioteca de componentes acessível para Angular 22."
+    },
+    "installation": {
+      "title": "Instalação",
+      "description": "Instale a shared-ui via npm e comece a usar os componentes."
+    },
+    "configuration": {
+      "title": "Configuração",
+      "description": "Configure a shared-ui para sua aplicação Angular."
+    },
+    "accessibility": {
+      "title": "Acessibilidade",
+      "description": "Diretrizes de acessibilidade e conformidade WCAG 2.2 AA."
+    }
+  },
+  "components": {
+    "uiAlert": {
+      "title": "UiAlert",
+      "overview": "Exiba mensagens de alerta para os usuários.",
+      "whenToUse": "Use quando precisar comunicar mensagens de sucesso, informação, aviso ou perigo."
+    },
+    "uiButton": {
+      "title": "UiButton",
+      "overview": "Botão de ação principal.",
+      "whenToUse": "Use para ações principais em formulários e caixas de diálogo."
+    },
+    "uiButtonLink": {
+      "title": "UiButtonLink",
+      "overview": "Botão com aparência de link.",
+      "whenToUse": "Use para ações secundárias ou navegação."
+    },
+    "formInput": {
+      "title": "FormInput",
+      "overview": "Campo de entrada de texto com validação e suporte a descrição.",
+      "whenToUse": "Use para entrada de texto de uma linha em formulários."
+    },
+    "formTextarea": {
+      "title": "FormTextarea",
+      "overview": "Campo de entrada de texto de múltiplas linhas.",
+      "whenToUse": "Use para entrada de texto mais longa."
+    },
+    "formSelect": {
+      "title": "FormSelect",
+      "overview": "Campo de seleção suspensa.",
+      "whenToUse": "Use ao selecionar uma opção de uma lista."
+    },
+    "formNumber": {
+      "title": "FormNumber",
+      "overview": "Campo de entrada numérica.",
+      "whenToUse": "Use para valores numéricos."
+    },
+    "formDate": {
+      "title": "FormDate",
+      "overview": "Campo de entrada de data.",
+      "whenToUse": "Use para seleção de data."
+    },
+    "formTime": {
+      "title": "FormTime",
+      "overview": "Campo de entrada de hora.",
+      "whenToUse": "Use para seleção de hora."
+    },
+    "formDateTime": {
+      "title": "FormDateTime",
+      "overview": "Campo de entrada de data e hora.",
+      "whenToUse": "Use para seleção de data e hora."
+    },
+    "formCheckbox": {
+      "title": "FormCheckbox",
+      "overview": "Campo de seleção por caixa de seleção.",
+      "whenToUse": "Use para escolhas binárias."
+    },
+    "formRadioGroup": {
+      "title": "FormRadioGroup",
+      "overview": "Grupo de botões de opção para seleção única.",
+      "whenToUse": "Use ao selecionar uma opção de escolhas mutuamente exclusivas."
+    },
+    "formSwitch": {
+      "title": "FormSwitch",
+      "overview": "Campo de chave de alternância.",
+      "whenToUse": "Use para configurações de ligar/desligar."
+    },
+    "formFieldGroup": {
+      "title": "FormFieldGroup",
+      "overview": "Grupo de campos de formulário relacionados.",
+      "whenToUse": "Use para organizar entradas relacionadas."
+    },
+    "formFile": {
+      "title": "FormFile",
+      "overview": "Campo de upload de arquivo.",
+      "whenToUse": "Use para seleção e upload de arquivos."
+    },
+    "formAlert": {
+      "title": "FormAlert",
+      "overview": "Mensagens de alerta de nível de formulário.",
+      "whenToUse": "Use para mensagens de validação em todo o formulário."
+    },
+    "formContext": {
+      "title": "FormContextDirective",
+      "overview": "Diretiva para gerenciamento de contexto de formulário e foco de alerta.",
+      "whenToUse": "Use dentro de formulários para gerenciar contexto e comportamento de foco."
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<aside class="docs-toc" aria-label="On this page">
+
+  <button
+    type="button"
+    class="docs-toc__toggle"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-label]="isOpen() ? 'Collapse' : 'On this page'"
+  >
+    <span class="docs-toc__toggle__text">On this page</span>
+    <span class="docs-toc__toggle__icon" aria-hidden="true">▾</span>
+  </button>
+
+  @if (isOpen()) {
+    <nav class="docs-toc__nav">
+      <ul class="docs-toc__list">
+        @for (section of sections(); track section.id) {
+          <li class="docs-toc__item" [class.docs-toc__item--level-3]="section.level === 3">
+            <a
+              class="docs-toc__link"
+              [class.docs-toc__link--active]="isActive(section.id)"
+              (click)="scrollTo(section.id)"
+            >
+              {{ section.text }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+  }
+
+</aside>

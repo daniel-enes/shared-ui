@@ -1,0 +1,112 @@
+.docs-toc {
+  display: none;
+  width: 260px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--docs-border-color);
+  background-color: var(--docs-toc-bg);
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  z-index: 1020;
+}
+
+@media (min-width: 992px) {
+  .docs-toc {
+    display: block;
+  }
+}
+
+.docs-toc__toggle {
+  display: none;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--docs-text-main);
+  border-bottom: 1px solid var(--docs-border-color);
+}
+
+.docs-toc__toggle:hover,
+.docs-toc__toggle:focus {
+  background-color: var(--docs-bg-surface);
+}
+
+.docs-toc__toggle:focus-visible {
+  outline: 2px solid var(--docs-focus-ring);
+  outline-offset: 2px;
+}
+
+.docs-toc__toggle__icon {
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+.docs-toc__nav {
+  padding: 1rem;
+}
+
+.docs-toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.docs-toc__item {
+  margin: 0;
+}
+
+.docs-toc__item--level-3 {
+  padding-left: 1rem;
+}
+
+.docs-toc__link {
+  display: block;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--docs-text-muted);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.docs-toc__link:hover,
+.docs-toc__link:focus {
+  background-color: var(--docs-bg-surface);
+  color: var(--docs-text-main);
+}
+
+.docs-toc__link:focus-visible {
+  outline: 2px solid var(--docs-focus-ring);
+  outline-offset: -2px;
+}
+
+.docs-toc__link--active {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: var(--docs-focus-ring);
+  font-weight: 500;
+}
+
+[data-theme="dark"] .docs-toc__link--active {
+  background-color: rgba(77, 171, 247, 0.15);
+}
+
+@media (max-width: 991px) {
+  .docs-toc {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1060;
+    width: 280px;
+    height: 100vh;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .docs-toc__toggle {
+    display: block;
+  }
+}

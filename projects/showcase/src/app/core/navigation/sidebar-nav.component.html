@@ -1,0 +1,80 @@
+<aside class="docs-sidebar" [class.docs-sidebar--collapsed]="isCollapsed" aria-label="Main navigation">
+
+  <button
+    type="button"
+    class="docs-sidebar__collapse"
+    (click)="toggleCollapse()"
+    [attr.aria-label]="isCollapsed ? 'Expand' : 'Collapse'"
+    [attr.aria-expanded]="!isCollapsed"
+  >
+    <span class="docs-sidebar__collapse__icon" aria-hidden="true">
+      @if (isCollapsed) {
+        ›
+      } @else {
+        ‹
+      }
+    </span>
+  </button>
+
+  <nav class="docs-sidebar__nav">
+    <ul class="docs-sidebar__list">
+      @for (item of navItems; track item.label) {
+        <li class="docs-sidebar__group">
+          <button
+            type="button"
+            class="docs-sidebar__group__title"
+            (click)="toggleChildren(item)"
+            [attr.aria-expanded]="!!item.children"
+          >
+            {{ getLabel(item.label) }}
+            <span class="docs-sidebar__group__arrow" aria-hidden="true">▾</span>
+          </button>
+
+          @if (item.children) {
+            <ul class="docs-sidebar__children">
+              @for (child of item.children; track child.label) {
+                <li class="docs-sidebar__child">
+                  @if (child.children) {
+                    <button
+                      type="button"
+                      class="docs-sidebar__child__title"
+                      (click)="toggleChildren(child)"
+                      [attr.aria-expanded]="!!child.children"
+                    >
+                      {{ getLabel(child.label) }}
+                    </button>
+
+                    @if (child.children) {
+                      <ul class="docs-sidebar__grandchildren">
+                        @for (grandchild of child.children; track grandchild.label) {
+                          <li class="docs-sidebar__grandchild">
+                            <a
+                              class="docs-sidebar__link"
+                              [routerLink]="'/:lang/docs/' + grandchild.path"
+                              routerLinkActive="docs-sidebar__link--active"
+                            >
+                              {{ getLabel(grandchild.label) }}
+                            </a>
+                          </li>
+                        }
+                      </ul>
+                    }
+                  } @else {
+                    <a
+                      class="docs-sidebar__link"
+                      [routerLink]="'/:lang/docs/' + child.path"
+                      routerLinkActive="docs-sidebar__link--active"
+                    >
+                      {{ getLabel(child.label) }}
+                    </a>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+
+</aside>

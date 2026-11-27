@@ -1,0 +1,69 @@
+.doc-page {
+  max-width: 800px;
+}
+
+.doc-page__header {
+  margin-bottom: 2rem;
+}
+
+.doc-page__lead {
+  font-size: 1.125rem;
+  color: var(--docs-text-muted);
+}
+
+.doc-section {
+  margin-bottom: 2.5rem;
+}
+
+.doc-section h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--docs-text-main);
+}
+
+.doc-section p,
+.doc-section ul {
+  color: var(--docs-text-main);
+  line-height: 1.6;
+}
+
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.pre code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+}
+
+.props-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.props-table th,
+.props-table td {
+  border: 1px solid var(--docs-border-color);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.props-table th {
+  background-color: var(--docs-bg-surface);
+  font-weight: 600;
+  color: var(--docs-text-main);
+}
+
+.props-table td {
+  color: var(--docs-text-main);
+}
+
+.doc-section a {
+  color: var(--docs-focus-ring);
+  text-decoration: underline;
+}

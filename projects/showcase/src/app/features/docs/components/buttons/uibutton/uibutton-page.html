@@ -1,0 +1,91 @@
+<article class="doc-page">
+
+  <header class="doc-page__header">
+    <h1 id="uibutton">UiButton</h1>
+    <p class="doc-page__lead">Primary action button component.</p>
+  </header>
+
+  <section class="doc-section" id="when-to-use">
+    <h2>When to use</h2>
+    <p>Use for main actions in forms and dialogs.</p>
+  </section>
+
+  <section class="doc-section" id="demo">
+    <h2>Demonstration</h2>
+    <div class="demo">
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-outline">Outline</button>
+      <button class="btn btn-danger">Danger</button>
+    </div>
+  </section>
+
+  <section class="doc-section" id="code">
+    <h2>Code example</h2>
+    <pre><code class="language-html">&lt;ui-button variant="primary" (click)="onClick()">
+  Click me
+&lt;/ui-button></code></pre>
+  </section>
+
+  <section class="doc-section" id="inputs">
+    <h2>Inputs</h2>
+    <table class="props-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>variant</code></td>
+          <td>'primary' | 'secondary' | 'outline' | 'danger'</td>
+          <td>'primary'</td>
+          <td>Visual variant of the button.</td>
+        </tr>
+        <tr>
+          <td><code>size</code></td>
+          <td>'sm' | 'md' | 'lg'</td>
+          <td>'md'</td>
+          <td>Button size.</td>
+        </tr>
+        <tr>
+          <td><code>disabled</code></td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Whether the button is disabled.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="outputs">
+    <h2>Outputs</h2>
+    <table class="props-table">
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>click</code></td>
+          <td>Emitted when the button is clicked.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="accessibility">
+    <h2>Accessibility</h2>
+    <ul>
+      <li>Keyboard activatable (Enter, Space).</li>
+      <li>Visible focus indicator.</li>
+      <li>Disabled state communicated via <code>aria-disabled</code>.</li>
+    </ul>
+  </section>
+
+</article>

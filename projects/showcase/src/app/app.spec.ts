@@ -4,13 +4,27 @@ import { provideRouter } from '@angular/router';
 import { App } from './app';
 import { routes } from './app.routes';
 
-import { DocsLayoutComponent } from './core/layout/docs-layout.component';
+import { provideTransloco } from '@jsverse/transloco';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes)],
+      providers: [
+        provideRouter(routes),
+        provideTransloco({
+          config: {
+            availableLangs: ['en', 'pt-BR'],
+            defaultLang: 'en',
+            fallbackLang: 'en',
+            missingHandler: {
+              useFallbackTranslation: true,
+            },
+            reRenderOnLangChange: true,
+            prodMode: false,
+          },
+        }),
+      ],
     }).compileComponents();
   });
 

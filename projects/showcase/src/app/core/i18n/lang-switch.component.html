@@ -1,0 +1,40 @@
+<div
+  class="lang-switch"
+  [attr.aria-label]="'Language'"
+  [attr.aria-expanded]="isOpen()"
+>
+  <button
+    type="button"
+    class="lang-switch__trigger"
+    (click)="toggleMenu()"
+    [attr.aria-haspopup]="'listbox'"
+  >
+    <span class="lang-switch__label">
+      @if (activeLang() === 'en') {
+        EN
+      } @else {
+        PT
+      }
+    </span>
+    <span class="lang-switch__arrow">▾</span>
+  </button>
+
+  @if (isOpen()) {
+    <ul class="lang-switch__menu" role="listbox">
+      @for (lang of langs; track lang) {
+        <li>
+          <button
+            type="button"
+            class="lang-switch__item"
+            [class.lang-switch__item--active]="activeLang() === lang"
+            role="menuitemradio"
+            [attr.aria-checked]="activeLang() === lang"
+            (click)="setLang(lang)"
+          >
+            {{ getLabel(lang) }}
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>
