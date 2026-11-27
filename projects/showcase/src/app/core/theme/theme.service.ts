@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal, computed } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
 
@@ -15,27 +15,44 @@ export class ThemeService {
 
   readonly theme = signal<Theme>(this.storedTheme ?? 'system');
 
-  readonly effectiveTheme = signal<'light' | 'dark'>('light');
+  readonly effectiveTheme = computed<'light' | 'dark'>(() => {
+    const current = this.theme();
 
-  readonly ariaLabel = signal(this.getAriaLabelText());
+    if (current === 'system') {
+      if (typeof window !== 'undefined' && window.matchMedia) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return 'light';
+    }
+
+    return current;
+  });
 
   constructor() {
 
-    this.resolveEffectiveTheme();
-
     effect(() => {
-      const current = this.theme();
-      this.resolveEffectiveTheme();
-      this.applyTheme();
-      this.ariaLabel.set(this.getAriaLabelText());
+      const effective = this.effectiveTheme();
+      this.document.documentElement.setAttribute('data-theme', effective);
     });
 
     if (typeof window !== 'undefined' && window.matchMedia) {
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
         if (this.theme() === 'system') {
-          this.resolveEffectiveTheme();
-          this.applyTheme();
-          this.ariaLabel.set(this.getAriaLabelText());
+          this.document.documentElement.setAttribute(
+            'data-theme',
+            window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          );
+        }
+      });
+    }
+
+    if (typeof window !== 'undefined' && window.addEventListener) {
+      window.addEventListener('storage', (event: StorageEvent) => {
+        if (event.key === STORAGE_KEY && event.newValue) {
+          const value = event.newValue;
+          if (value === 'system' || value === 'light' || value === 'dark') {
+            this.theme.set(value);
+          }
         }
       });
     }
@@ -56,44 +73,14 @@ export class ThemeService {
     return null;
   }
 
-  private resolveEffectiveTheme(): void {
-
-    const current = this.theme();
-
-    if (current === 'system') {
-
-      if (typeof window !== 'undefined' && window.matchMedia) {
-        this.effectiveTheme.set(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      } else {
-        this.effectiveTheme.set('light');
-      }
-
-    } else {
-      this.effectiveTheme.set(current);
-    }
-  }
-
-  applyTheme(): void {
-
-    const effective = this.effectiveTheme();
-
-    this.document.documentElement.setAttribute('data-theme', effective);
-
-    if (typeof localStorage !== 'undefined' && this.theme() !== 'system') {
-      localStorage.setItem(STORAGE_KEY, this.theme());
-    }
-  }
-
   setTheme(value: Theme): void {
 
     this.theme.set(value);
 
-    if (value === 'system') {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    } else {
-      this.applyTheme();
+    if (value !== 'system' && typeof localStorage !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, value);
+    } else if (value === 'system' && typeof localStorage !== 'undefined') {
+      localStorage.removeItem(STORAGE_KEY);
     }
   }
 
@@ -108,7 +95,7 @@ export class ThemeService {
     this.setTheme(order[nextIndex]);
   }
 
-  private getAriaLabelText(): string {
+  getAriaLabel(): string {
 
     const current = this.theme();
 

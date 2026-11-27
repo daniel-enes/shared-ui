@@ -2,13 +2,15 @@
   type="button"
   class="btn btn-sm theme-toggle"
   (click)="toggleTheme()"
-  [attr.aria-label]="ariaLabel()"
+  [attr.aria-label]="themeService.getAriaLabel()"
 >
-  @if (theme() === 'system') {
-    <span class="theme-toggle__icon">auto</span>
-  } @else if (theme() === 'light') {
-    <span class="theme-toggle__icon">☀</span>
-  } @else {
-    <span class="theme-toggle__icon">☾</span>
-  }
+  <span class="theme-toggle__icon" aria-hidden="true">
+    @if (theme() === 'system') {
+      auto
+    } @else if (theme() === 'light') {
+      ☀
+    } @else {
+      ☾
+    }
+  </span>
 </button>

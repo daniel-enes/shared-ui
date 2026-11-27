@@ -4,24 +4,26 @@
   --docs-bg-body: #ffffff;
   --docs-bg-surface: #f8f9fa;
   --docs-text-main: #212529;
-  --docs-text-muted: #6c757d;
-  --docs-border-color: #dee2e6;
+  --docs-text-muted: #495057;
+  --docs-border-color: #adb5bd;
   --docs-sidebar-bg: #f8f9fa;
   --docs-toc-bg: #f8f9fa;
   --docs-code-bg: #f4f4f4;
   --docs-code-text: #d63384;
+  --docs-focus-ring: #0d6efd;
 }
 
 [data-theme="dark"] {
-  --docs-bg-body: #1a1a1a;
-  --docs-bg-surface: #2d2d2d;
+  --docs-bg-body: #0f0f0f;
+  --docs-bg-surface: #1a1a1a;
   --docs-text-main: #e9ecef;
   --docs-text-muted: #adb5bd;
   --docs-border-color: #495057;
-  --docs-sidebar-bg: #2d2d2d;
-  --docs-toc-bg: #2d2d2d;
-  --docs-code-bg: #3a3a3a;
+  --docs-sidebar-bg: #1a1a1a;
+  --docs-toc-bg: #1a1a1a;
+  --docs-code-bg: #2a2a2a;
   --docs-code-text: #ff9eff;
+  --docs-focus-ring: #4dabf7;
 }
 
 body {
@@ -33,4 +35,68 @@ body {
 .docs-header {
   background-color: var(--docs-bg-surface);
   border-bottom: 1px solid var(--docs-border-color);
+}
+
+.docs-header__brand {
+  color: var(--docs-text-main);
+  font-weight: 700;
+}
+
+.docs-header__brand:hover,
+.docs-header__brand:focus {
+  color: var(--docs-text-main);
+  opacity: 0.85;
+}
+
+.docs-header__brand:focus-visible {
+  outline: 2px solid var(--docs-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.theme-toggle {
+  border-color: var(--docs-border-color);
+  color: var(--docs-text-main);
+  background-color: transparent;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus {
+  border-color: var(--docs-text-muted);
+  color: var(--docs-text-main);
+  background-color: var(--docs-bg-surface);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--docs-focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.docs-sidebar,
+.docs-toc {
+  background-color: var(--docs-sidebar-bg);
+  color: var(--docs-text-main);
+}
+
+a {
+  color: var(--docs-focus-ring);
+}
+
+a:hover,
+a:focus {
+  color: var(--docs-focus-ring);
+  opacity: 0.85;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--docs-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--docs-focus-ring);
+  outline-offset: 2px;
 }

@@ -15,8 +15,6 @@ export class ThemeToggleComponent {
 
   readonly theme = this.themeService.theme;
 
-  readonly ariaLabel = this.themeService.ariaLabel;
-
   toggleTheme(): void {
 
     this.themeService.toggleTheme();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="70" viewBox="0 0 300 70" role="img" aria-labelledby="title desc">
+  <title id="title">Shared UI — Component Library</title>
+  <desc id="desc">A purple layered geometric mark beside the Shared UI wordmark and Component Library subtitle.</desc>
+
+  <defs>
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d28d9"/>
+      <stop offset="1" stop-color="#4c1d95"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Three stacked layers forming the Shared UI mark -->
+  <g fill="url(#purple)">
+    <path d="M35 4 L62 18 L35 32 L8 18 Z"/>
+    <path d="M8 29 L15 25.4 L35 35.8 L55 25.4 L62 29 L35 43 Z" opacity=".92"/>
+    <path d="M8 40 L15 36.4 L35 46.8 L55 36.4 L62 40 L35 54 Z" opacity=".82"/>
+  </g>
+
+  <g fill="#172033" font-family="Inter, Arial, Helvetica, sans-serif">
+    <text x="77" y="31" font-size="29" font-weight="700" letter-spacing="-1.1">Shared UI</text>
+    <text x="78" y="53" font-size="15.5" font-weight="400" letter-spacing="-.2" fill="#334155">Component Library</text>
+  </g>
+</svg>
